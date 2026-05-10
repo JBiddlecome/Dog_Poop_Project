@@ -10,8 +10,8 @@
     "east":  "N Catalina St"
   },
   "city": "Burbank, CA 91504",
-  "venmoHandle": "@ThorntonBlock1",
-  "venmoUrl": "https://venmo.com/ThorntonBlock1",
+  "venmoHandle": "@DogPoopProject",
+  "venmoUrl": "https://www.venmo.com/u/DogPoopProject",
   "websiteUrl": "https://thorntonblock1.onrender.com",
   "formspreeId": "YOUR_FORMSPREE_ID",
   "adminPasswordEnvVar": "ADMIN_PASSWORD",
