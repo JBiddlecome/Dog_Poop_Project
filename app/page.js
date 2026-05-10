@@ -42,7 +42,7 @@ export default function Home() {
             <h1 className="font-display text-5xl md:text-6xl font-bold text-ink leading-tight mb-4">
               Our Block.
               <br />
-              <span className="text-sage">Our Pride.</span>
+              <span className="text-sage">Our Home.</span>
             </h1>
             <p className="text-lg text-muted leading-relaxed mb-8">
               A neighbor-led effort to keep our sidewalks clean — with friendly signs,
