@@ -1,0 +1,30 @@
+{
+  "siteName": "Our Block",
+  "tagline": "A cleaner, friendlier neighborhood — together.",
+  "blockName": "Block 1",
+  "streets": ["N Niagara St", "N Catalina St", "Thornton Ave"],
+  "bounds": {
+    "north": "Thornton Ave",
+    "south": "Empire Ave",
+    "west":  "N Niagara St",
+    "east":  "N Catalina St"
+  },
+  "city": "Burbank, CA 91504",
+  "venmoHandle": "@ThorntonBlock1",
+  "venmoUrl": "https://venmo.com/ThorntonBlock1",
+  "websiteUrl": "https://thorntonblock1.onrender.com",
+  "formspreeId": "YOUR_FORMSPREE_ID",
+  "adminPasswordEnvVar": "ADMIN_PASSWORD",
+  "plannedStations": 5,
+  "costPerStation": 35,
+  "costPerSignPack": 15,
+  "plannedSigns": 10,
+  "lastUpdated": "2025-05-10",
+  "stats": {
+    "totalAddresses": 56,
+    "estimatedUnits": 100,
+    "walksCompleted": 0,
+    "stationsInstalled": 0,
+    "signsPosted": 0
+  }
+}

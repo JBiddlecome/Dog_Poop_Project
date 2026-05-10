@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: dog-poop-project
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ADMIN_PASSWORD
+        generateValue: false   # Set this manually in Render dashboard

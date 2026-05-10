@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display), Georgia, serif;
+  }
+
+  body {
+    font-family: var(--font-body), system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .btn-sage {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-sage text-white font-medium text-sm hover:bg-sage-dark transition-colors;
+  }
+  .btn-gold {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gold text-white font-medium text-sm hover:bg-gold-dark transition-colors;
+  }
+  .btn-outline {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-rule text-ink font-medium text-sm hover:border-sage hover:text-sage transition-colors;
+  }
+  .card {
+    @apply bg-white rounded-xl border border-rule p-6;
+  }
+  .section {
+    @apply max-w-5xl mx-auto px-6 py-16;
+  }
+  .label {
+    @apply block text-xs font-medium text-muted uppercase tracking-wider mb-1;
+  }
+  .input {
+    @apply w-full border border-rule rounded-lg px-4 py-2.5 text-sm text-ink bg-white focus:outline-none focus:ring-2 focus:ring-sage focus:border-transparent;
+  }
+}
