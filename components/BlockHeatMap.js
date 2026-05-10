@@ -16,10 +16,18 @@ function avg(counts) {
   return counts.reduce((a, b) => a + b, 0) / counts.length;
 }
 
+const FLAG_META = {
+  has_bin:        { label: 'Bin on site',     dot: '#2E8B6E', badge: 'bg-emerald-100 text-emerald-800' },
+  well_maintained:{ label: 'Well maintained', dot: '#4A7C59', badge: 'bg-sage-light text-sage-dark' },
+  no_grass:       { label: 'No grass',        dot: '#C8973A', badge: 'bg-gold-light text-gold-dark' },
+  empty_lot:      { label: 'Empty lot',       dot: '#888780', badge: 'bg-cream text-muted' },
+};
+
 function AddressRow({ addr, side, tooltip, setTooltip }) {
   const avgCount = avg(addr.counts);
   const { fill, text } = heatColor(avgCount);
   const isActive = tooltip?.id === addr.id;
+  const flags = addr.flags || [];
 
   return (
     <g
@@ -48,7 +56,7 @@ function AddressRow({ addr, side, tooltip, setTooltip }) {
         {addr.address.replace(', Burbank, CA 91504', '')}
         {addr.units > 1 ? `  (${addr.units}u)` : ''}
       </text>
-      {avgCount > 0 && (
+      {avgCount > 0 && flags.length === 0 && (
         <text
           x={side === 'left' ? 140 : 136}
           y={12.5}
@@ -60,6 +68,15 @@ function AddressRow({ addr, side, tooltip, setTooltip }) {
           {avgCount.toFixed(1)}
         </text>
       )}
+      {flags.map((flag, fi) => (
+        <circle
+          key={flag}
+          cx={side === 'left' ? 143 - fi * 8 : 139 - fi * 8}
+          cy={9}
+          r={3.5}
+          fill={FLAG_META[flag]?.dot || '#888780'}
+        />
+      ))}
     </g>
   );
 }
@@ -162,6 +179,18 @@ export default function BlockHeatMap({ data }) {
             {tooltip.street} side · {tooltip.units || '?'} unit{tooltip.units !== 1 ? 's' : ''}
             {tooltip.note ? ` · ${tooltip.note}` : ''}
           </p>
+          {tooltip.flags && tooltip.flags.length > 0 && (
+            <div className="mt-2 flex gap-1.5 flex-wrap">
+              {tooltip.flags.map(f => {
+                const meta = FLAG_META[f] || { label: f, badge: 'bg-cream text-muted' };
+                return (
+                  <span key={f} className={`text-xs px-2 py-0.5 rounded-full font-medium ${meta.badge}`}>
+                    {meta.label}
+                  </span>
+                );
+              })}
+            </div>
+          )}
           {tooltip.counts && tooltip.counts.length > 0 ? (
             <div className="mt-3">
               <p className="text-xs text-muted mb-1">Survey counts:</p>

@@ -381,6 +381,17 @@
       ]
     },
     {
+      "id": 57,
+      "address": "2250 N Niagara St",
+      "street": "Niagara",
+      "units": 1,
+      "confirmed": false,
+      "counts": [
+        0
+      ],
+      "flags": ["has_bin"]
+    },
+    {
       "id": 38,
       "address": "2300 N Niagara St",
       "street": "Niagara",

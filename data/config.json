@@ -21,10 +21,10 @@
   "plannedSigns": 10,
   "lastUpdated": "2025-05-10",
   "stats": {
-    "totalAddresses": 56,
+    "totalAddresses": 57,
     "estimatedUnits": 100,
     "walksCompleted": 0,
-    "stationsInstalled": 0,
+    "stationsInstalled": 1,
     "signsPosted": 0
   }
 }
