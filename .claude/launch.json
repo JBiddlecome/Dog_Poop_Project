@@ -5,8 +5,7 @@
       "name": "our-block",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 3000,
-      "cwd": "Dog_Poop_Project/Dog_Poop_Project"
+      "port": 3000
     }
   ]
 }
