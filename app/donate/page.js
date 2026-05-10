@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import config from '@/data/config.json';
 
 export const metadata = {
@@ -37,12 +38,16 @@ export default function DonatePage() {
             <p className="text-muted text-sm">Any amount helps. Even $3 buys a bag roll.</p>
           </div>
 
-          {/* QR placeholder — replace src with real Venmo QR image */}
-          <div className="border-2 border-dashed border-rule rounded-xl p-4 flex flex-col items-center gap-3 w-full">
-            <div className="w-40 h-40 bg-cream rounded-lg flex items-center justify-center text-muted text-xs text-center p-4">
-              Place your Venmo QR code image here
-              <br/>(add to /public/venmo-qr.png)
-            </div>
+          <div className="flex flex-col items-center gap-3 w-full">
+            <a href={config.venmoUrl} target="_blank" rel="noopener noreferrer">
+              <Image
+                src="/venmo-qr.png"
+                alt="Venmo QR code for Neighborhood Dog Poop Bag Fund"
+                width={220}
+                height={220}
+                className="rounded-xl"
+              />
+            </a>
             <a
               href={config.venmoUrl}
               target="_blank"
