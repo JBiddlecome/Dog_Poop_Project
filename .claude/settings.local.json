@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(Start-Process -FilePath \"npm\" -ArgumentList \"run\",\"dev\" -PassThru)",
+      "Bash(Out-Null)",
+      "Bash(Start-Sleep 5)",
+      "Bash(Invoke-WebRequest -Uri \"http://localhost:3000\" -UseBasicParsing -TimeoutSec 10)",
+      "Bash(Select-Object -ExpandProperty StatusCode)",
+      "mcp__Claude_Preview__preview_start",
+      "PowerShell(Get-NetTCPConnection -LocalPort 3000 -State Listen | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }; Write-Output \"Port 3000 cleared\")"
+    ]
+  }
+}

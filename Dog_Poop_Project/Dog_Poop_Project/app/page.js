@@ -8,7 +8,7 @@ const steps = [
     color: 'bg-sage-light text-sage-dark',
     icon: '🪧',
     title: 'Friendly yard signs',
-    body: 'We're asking willing neighbors to post a positive, welcoming sign — not a guilt trip, just a gentle reminder that most of us do the right thing.',
+    body: "We’re asking willing neighbors to post a positive, welcoming sign — not a guilt trip, just a gentle reminder that most of us do the right thing.",
   },
   {
     num: '02',
@@ -143,7 +143,7 @@ export default function Home() {
         <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-5">
           {[
             { icon: '🪧', title: 'Post a sign',       body: 'Want a free, friendly yard sign placed in your yard? Just say the word.', href: '/request' },
-            { icon: '🐾', title: 'Host a station',    body: 'Have a spot by your sidewalk? We'll install and maintain the dispenser.', href: '/request' },
+            { icon: '🐾', title: 'Host a station',    body: "Have a spot by your sidewalk? We'll install and maintain the dispenser.", href: '/request' },
             { icon: '💛', title: 'Donate $3–10',      body: 'Scan the Venmo QR on the donate page. 100% goes to bags and signs.', href: '/donate' },
             { icon: '📢', title: 'Spread the word',   body: 'Share this site with a neighbor. The more who know, the better it works.', href: null },
           ].map(h => (
