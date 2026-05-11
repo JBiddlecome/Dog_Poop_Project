@@ -4,8 +4,8 @@
 
 const ADDRESSES = [
   // Thornton Ave (north end)
-  { id: 1,  address: "2800 Thornton Ave",      street: "Thornton", lat: 34.1972, lng: -118.3087 },
-  { id: 2,  address: "2814 Thornton Ave",      street: "Thornton", lat: 34.1972, lng: -118.3069 },
+  { id: 1,  address: "2800 Thornton Ave",      street: "Thornton", lat: 34.19541493059659, lng: -118.34154100137708 },
+  { id: 2,  address: "2814 Thornton Ave",      street: "Thornton", lat: 34.19541833428656, lng: -118.34186086205530 },
 
   // N Catalina St (east side, north → south: 2345 down to 2215)
   { id: 3,  address: "2345 N Catalina St",     street: "Catalina", lat: 34.1972, lng: -118.3052 },
