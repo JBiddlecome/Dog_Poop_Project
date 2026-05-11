@@ -7,16 +7,16 @@
     "android": "expo start --android"
   },
   "dependencies": {
-    "expo": "~54.0.0",
-    "expo-location": "~18.0.0",
-    "expo-clipboard": "~7.0.0",
-    "expo-sharing": "~13.0.0",
-    "expo-file-system": "~18.0.0",
-    "@react-native-async-storage/async-storage": "2.1.0",
+    "expo": "~55.0.0",
+    "expo-location": "*",
+    "expo-clipboard": "*",
+    "expo-sharing": "*",
+    "expo-file-system": "*",
+    "@react-native-async-storage/async-storage": "*",
     "react": "19.0.0",
-    "react-native": "0.79.2",
-    "react-native-safe-area-context": "5.1.0",
-    "react-native-screens": "4.4.0"
+    "react-native": "*",
+    "react-native-safe-area-context": "*",
+    "react-native-screens": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0"
