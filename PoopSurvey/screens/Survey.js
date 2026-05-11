@@ -1,71 +1,53 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, TextInput,
-  KeyboardAvoidingView, Platform, Alert, FlatList, Modal, Keyboard,
+  KeyboardAvoidingView, Platform, Alert, FlatList, Modal, Keyboard, ScrollView,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 import { findNearest, ADDRESSES } from '../utils/nearest';
 import { saveWalk, getCount, setCount, totalPoops, addressesWithPoops } from '../utils/storage';
 
 const GPS_INTERVAL_MS = 4000;
-const GPS_LOCK_SECONDS = 12; // pause auto-select after manual address pick
+const GPS_LOCK_SECONDS = 12;
 
 export default function Survey({ walk: initialWalk, onEnd }) {
+  const insets = useSafeAreaInsets();
   const [walk, setWalk] = useState(initialWalk);
   const [currentAddr, setCurrentAddr] = useState(ADDRESSES[0]);
   const [distanceFt, setDistanceFt] = useState(null);
-  const [gpsStatus, setGpsStatus] = useState('searching'); // 'searching' | 'active' | 'error'
+  const [gpsStatus, setGpsStatus] = useState('searching');
   const [numberInput, setNumberInput] = useState('');
-  const [gpsLocked, setGpsLocked] = useState(false); // true = user manually picked, pause GPS
+  const [gpsLocked, setGpsLocked] = useState(false);
   const [pickerVisible, setPickerVisible] = useState(false);
   const lockTimerRef = useRef(null);
-  const walkRef = useRef(walk);
+  const gpsLockedRef = useRef(gpsLocked);
 
-  useEffect(() => { walkRef.current = walk; }, [walk]);
+  useEffect(() => { gpsLockedRef.current = gpsLocked; }, [gpsLocked]);
 
-  // Persist on every change
   useEffect(() => {
     saveWalk(walk);
   }, [walk]);
 
-  // GPS polling
   useEffect(() => {
     let subscription = null;
-
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setGpsStatus('error');
-        return;
-      }
-
+      if (status !== 'granted') { setGpsStatus('error'); return; }
       subscription = await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.High,
-          timeInterval: GPS_INTERVAL_MS,
-          distanceInterval: 5, // meters
-        },
+        { accuracy: Location.Accuracy.High, timeInterval: GPS_INTERVAL_MS, distanceInterval: 5 },
         (loc) => {
           setGpsStatus('active');
           if (!gpsLockedRef.current) {
-            const { address, distanceFt: d } = findNearest(
-              loc.coords.latitude,
-              loc.coords.longitude
-            );
+            const { address, distanceFt: d } = findNearest(loc.coords.latitude, loc.coords.longitude);
             setCurrentAddr(address);
             setDistanceFt(d);
           }
         }
       );
     })();
-
     return () => subscription?.remove();
   }, []);
-
-  // Keep a ref so the GPS callback can read gpsLocked without stale closure
-  const gpsLockedRef = useRef(gpsLocked);
-  useEffect(() => { gpsLockedRef.current = gpsLocked; }, [gpsLocked]);
 
   function lockGpsFor(seconds) {
     setGpsLocked(true);
@@ -82,25 +64,15 @@ export default function Survey({ walk: initialWalk, onEnd }) {
   const count = getCount(walk, currentAddr.id);
 
   function updateCount(newVal) {
-    const updated = setCount(walk, currentAddr.id, newVal);
-    setWalk(updated);
+    setWalk(setCount(walk, currentAddr.id, newVal));
   }
 
-  function handlePlus() {
-    updateCount(count + 1);
-  }
-
-  function handleMinus() {
-    if (count > 0) updateCount(count - 1);
-  }
+  function handlePlus() { updateCount(count + 1); }
+  function handleMinus() { if (count > 0) updateCount(count - 1); }
 
   function handleSetNumber() {
     const n = parseInt(numberInput, 10);
-    if (!isNaN(n) && n >= 0) {
-      updateCount(n);
-      setNumberInput('');
-      Keyboard.dismiss();
-    }
+    if (!isNaN(n) && n >= 0) { updateCount(n); setNumberInput(''); Keyboard.dismiss(); }
   }
 
   function handleEndWalk() {
@@ -114,31 +86,39 @@ export default function Survey({ walk: initialWalk, onEnd }) {
     );
   }
 
+  // Live count list — addresses with nonzero counts, sorted highest first
+  const liveCounts = ADDRESSES
+    .map((a) => ({ ...a, count: getCount(walk, a.id) }))
+    .filter((a) => a.count > 0)
+    .sort((a, b) => b.count - a.count);
+
   const gpsColor = gpsStatus === 'active' ? '#16a34a' : gpsStatus === 'error' ? '#dc2626' : '#f59e0b';
-  const gpsLabel = gpsStatus === 'active' ? (gpsLocked ? `GPS paused ${GPS_LOCK_SECONDS}s` : 'GPS active') : gpsStatus === 'error' ? 'GPS error' : 'Searching…';
+  const gpsLabel = gpsStatus === 'active'
+    ? (gpsLocked ? 'MANUAL' : 'GPS active')
+    : gpsStatus === 'error' ? 'GPS error' : 'Searching…';
 
   return (
-    <SafeAreaView style={s.safe}>
+    <View style={[s.safe, { paddingTop: insets.top }]}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+
         {/* Header */}
         <View style={s.header}>
           <View style={[s.gpsDot, { backgroundColor: gpsColor }]} />
           <Text style={[s.gpsLabel, { color: gpsColor }]}>{gpsLabel}</Text>
-          {distanceFt !== null && gpsStatus === 'active' && (
-            <Text style={s.distText}>{distanceFt} ft away</Text>
+          {distanceFt !== null && gpsStatus === 'active' && !gpsLocked && (
+            <Text style={s.distText}>{distanceFt} ft</Text>
           )}
           <View style={{ flex: 1 }} />
           <TouchableOpacity onPress={handleEndWalk} style={s.endBtn}>
-            <Text style={s.endBtnText}>End</Text>
+            <Text style={s.endBtnText}>End Walk</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Address display — tap to manually pick */}
+        {/* Current address — tap to manually pick */}
         <TouchableOpacity style={s.addrBlock} onPress={() => setPickerVisible(true)} activeOpacity={0.7}>
           <Text style={s.addrStreet}>{currentAddr.street}</Text>
           <Text style={s.addrName} numberOfLines={1}>{currentAddr.address}</Text>
           <Text style={s.addrHint}>tap to change address</Text>
-          {gpsLocked && <Text style={s.lockedBadge}>MANUAL</Text>}
         </TouchableOpacity>
 
         {/* Big counter */}
@@ -146,12 +126,10 @@ export default function Survey({ walk: initialWalk, onEnd }) {
           <TouchableOpacity style={s.minusBtn} onPress={handleMinus} activeOpacity={0.7}>
             <Text style={s.minusBtnText}>−</Text>
           </TouchableOpacity>
-
           <View style={s.countBox}>
             <Text style={s.countNum}>{count}</Text>
-            <Text style={s.countLabel}>poops</Text>
+            <Text style={s.countLabel}>poops here</Text>
           </View>
-
           <TouchableOpacity style={s.plusBtn} onPress={handlePlus} activeOpacity={0.7}>
             <Text style={s.plusBtnText}>+</Text>
           </TouchableOpacity>
@@ -174,28 +152,40 @@ export default function Survey({ walk: initialWalk, onEnd }) {
           </TouchableOpacity>
         </View>
 
-        {/* Footer stats */}
-        <View style={s.footer}>
-          <View style={s.stat}>
-            <Text style={s.statNum}>{totalPoops(walk)}</Text>
-            <Text style={s.statLabel}>total poops</Text>
+        {/* Live count list */}
+        <View style={s.liveSection}>
+          <View style={s.liveTitleRow}>
+            <Text style={s.liveTitle}>This walk</Text>
+            <Text style={s.liveTotals}>
+              {totalPoops(walk)} poops · {addressesWithPoops(walk)} addresses
+            </Text>
           </View>
-          <View style={s.statDivider} />
-          <View style={s.stat}>
-            <Text style={s.statNum}>{addressesWithPoops(walk)}</Text>
-            <Text style={s.statLabel}>addresses hit</Text>
-          </View>
-          <View style={s.statDivider} />
-          <View style={s.stat}>
-            <Text style={s.statNum}>{walk.date}</Text>
-            <Text style={s.statLabel}>walk date</Text>
-          </View>
+          {liveCounts.length === 0 ? (
+            <Text style={s.liveEmpty}>No poops recorded yet</Text>
+          ) : (
+            <ScrollView style={s.liveScroll} nestedScrollEnabled>
+              {liveCounts.map((a) => (
+                <TouchableOpacity
+                  key={a.id}
+                  style={s.liveRow}
+                  onPress={() => manualSelectAddress(a)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={s.liveAddr} numberOfLines={1}>{a.address}</Text>
+                  <View style={[s.liveBadge, a.count >= 5 && s.liveBadgeHot]}>
+                    <Text style={[s.liveBadgeText, a.count >= 5 && s.liveBadgeTextHot]}>{a.count}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          )}
         </View>
+
       </KeyboardAvoidingView>
 
       {/* Address picker modal */}
       <Modal visible={pickerVisible} animationType="slide" presentationStyle="pageSheet">
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <View style={[{ flex: 1, backgroundColor: '#fff' }, { paddingTop: insets.top }]}>
           <View style={s.modalHeader}>
             <Text style={s.modalTitle}>Select Address</Text>
             <TouchableOpacity onPress={() => setPickerVisible(false)}>
@@ -226,9 +216,9 @@ export default function Survey({ walk: initialWalk, onEnd }) {
               );
             }}
           />
-        </SafeAreaView>
+        </View>
       </Modal>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -257,124 +247,106 @@ const s = StyleSheet.create({
   addrBlock: {
     backgroundColor: '#f8f8f8',
     marginHorizontal: 16,
-    marginTop: 16,
+    marginTop: 12,
     borderRadius: 16,
-    padding: 20,
-    position: 'relative',
+    padding: 16,
   },
-  addrStreet: { fontSize: 13, color: '#888', fontWeight: '600', textTransform: 'uppercase', letterSpacing: 1 },
-  addrName: { fontSize: 26, fontWeight: '700', color: '#111', marginTop: 4 },
-  addrHint: { fontSize: 12, color: '#bbb', marginTop: 6 },
-  lockedBadge: {
-    position: 'absolute',
-    top: 14,
-    right: 14,
-    backgroundColor: '#fef9c3',
-    color: '#854d0e',
-    fontSize: 11,
-    fontWeight: '700',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-    overflow: 'hidden',
-  },
+  addrStreet: { fontSize: 12, color: '#888', fontWeight: '600', textTransform: 'uppercase', letterSpacing: 1 },
+  addrName: { fontSize: 22, fontWeight: '700', color: '#111', marginTop: 2 },
+  addrHint: { fontSize: 11, color: '#bbb', marginTop: 4 },
 
   counterRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 24,
+    marginTop: 16,
     gap: 16,
     paddingHorizontal: 16,
   },
   minusBtn: {
-    width: 88,
-    height: 88,
-    borderRadius: 44,
-    backgroundColor: '#fee2e2',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 80, height: 80, borderRadius: 40,
+    backgroundColor: '#fee2e2', alignItems: 'center', justifyContent: 'center',
   },
-  minusBtnText: { fontSize: 44, color: '#dc2626', lineHeight: 54, fontWeight: '300' },
+  minusBtnText: { fontSize: 40, color: '#dc2626', lineHeight: 50, fontWeight: '300' },
   plusBtn: {
-    width: 88,
-    height: 88,
-    borderRadius: 44,
-    backgroundColor: '#dcfce7',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 80, height: 80, borderRadius: 40,
+    backgroundColor: '#dcfce7', alignItems: 'center', justifyContent: 'center',
   },
-  plusBtnText: { fontSize: 44, color: '#16a34a', lineHeight: 54, fontWeight: '300' },
+  plusBtnText: { fontSize: 40, color: '#16a34a', lineHeight: 50, fontWeight: '300' },
   countBox: { flex: 1, alignItems: 'center' },
-  countNum: { fontSize: 72, fontWeight: '700', color: '#111', lineHeight: 80 },
-  countLabel: { fontSize: 14, color: '#888', marginTop: -4 },
+  countNum: { fontSize: 64, fontWeight: '700', color: '#111', lineHeight: 72 },
+  countLabel: { fontSize: 13, color: '#888' },
 
   inputRow: {
     flexDirection: 'row',
     marginHorizontal: 16,
-    marginTop: 24,
+    marginTop: 12,
     gap: 10,
   },
   numInput: {
-    flex: 1,
-    height: 50,
-    borderWidth: 1.5,
-    borderColor: '#ddd',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    fontSize: 18,
-    color: '#111',
-    backgroundColor: '#fafafa',
+    flex: 1, height: 46,
+    borderWidth: 1.5, borderColor: '#ddd', borderRadius: 12,
+    paddingHorizontal: 16, fontSize: 18, color: '#111', backgroundColor: '#fafafa',
   },
   setBtn: {
-    backgroundColor: '#1d4ed8',
-    borderRadius: 12,
-    paddingHorizontal: 22,
-    justifyContent: 'center',
+    backgroundColor: '#1d4ed8', borderRadius: 12, paddingHorizontal: 20, justifyContent: 'center',
   },
   setBtnText: { color: '#fff', fontSize: 16, fontWeight: '700' },
 
-  footer: {
-    flexDirection: 'row',
-    marginTop: 'auto',
+  // Live count list
+  liveSection: {
+    flex: 1,
+    marginHorizontal: 16,
+    marginTop: 14,
     borderTopWidth: 1,
     borderTopColor: '#eee',
-    paddingVertical: 14,
+    paddingTop: 10,
+    minHeight: 0,
   },
-  stat: { flex: 1, alignItems: 'center' },
-  statNum: { fontSize: 16, fontWeight: '700', color: '#111' },
-  statLabel: { fontSize: 11, color: '#888', marginTop: 2 },
-  statDivider: { width: 1, backgroundColor: '#eee', marginVertical: 4 },
-
-  // Modal
-  modalHeader: {
+  liveTitleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    marginBottom: 6,
+  },
+  liveTitle: { fontSize: 12, fontWeight: '700', color: '#888', textTransform: 'uppercase', letterSpacing: 1 },
+  liveTotals: { fontSize: 12, color: '#888' },
+  liveEmpty: { fontSize: 13, color: '#ccc', fontStyle: 'italic', paddingVertical: 8 },
+  liveScroll: { flex: 1 },
+  liveRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 6,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#f5f5f5',
+  },
+  liveAddr: { flex: 1, fontSize: 14, color: '#333' },
+  liveBadge: {
+    backgroundColor: '#dcfce7', borderRadius: 10,
+    minWidth: 28, height: 28, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6,
+  },
+  liveBadgeHot: { backgroundColor: '#fee2e2' },
+  liveBadgeText: { fontSize: 13, fontWeight: '700', color: '#16a34a' },
+  liveBadgeTextHot: { color: '#dc2626' },
+
+  // Modal
+  modalHeader: {
+    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+    padding: 16, borderBottomWidth: 1, borderBottomColor: '#eee',
   },
   modalTitle: { fontSize: 18, fontWeight: '700', color: '#111' },
   modalClose: { fontSize: 16, color: '#1d4ed8', fontWeight: '600' },
   pickerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    flexDirection: 'row', alignItems: 'center',
+    paddingHorizontal: 16, paddingVertical: 12,
+    borderBottomWidth: 1, borderBottomColor: '#f0f0f0',
   },
   pickerRowActive: { backgroundColor: '#16a34a' },
   pickerStreet: { fontSize: 11, color: '#888', fontWeight: '600', textTransform: 'uppercase' },
   pickerAddr: { fontSize: 15, color: '#111', fontWeight: '500', marginTop: 2 },
   pickerBadge: {
-    backgroundColor: '#dcfce7',
-    borderRadius: 12,
-    width: 32,
-    height: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#dcfce7', borderRadius: 12,
+    width: 32, height: 32, alignItems: 'center', justifyContent: 'center',
   },
   pickerBadgeActive: { backgroundColor: '#fff' },
   pickerBadgeText: { fontSize: 14, fontWeight: '700', color: '#16a34a' },

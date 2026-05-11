@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { loadWalk, buildEmptyWalk, clearWalk, totalPoops, addressesWithPoops } from '../utils/storage';
 
 function todayStr() {
@@ -10,6 +10,7 @@ function todayStr() {
 }
 
 export default function StartWalk({ onStart }) {
+  const insets = useSafeAreaInsets();
   const [savedWalk, setSavedWalk] = useState(null);
 
   useEffect(() => {
@@ -44,7 +45,7 @@ export default function StartWalk({ onStart }) {
   }
 
   return (
-    <SafeAreaView style={s.safe}>
+    <View style={[s.safe, { paddingTop: insets.top }]}>
       <ScrollView contentContainerStyle={s.container}>
         <Text style={s.title}>🐾 Poop Survey</Text>
         <Text style={s.subtitle}>Block 1 · Burbank, CA</Text>
@@ -75,7 +76,7 @@ export default function StartWalk({ onStart }) {
           </Text>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 

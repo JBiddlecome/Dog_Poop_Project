@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert, Share, Platform,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Clipboard from 'expo-clipboard';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
@@ -19,6 +19,7 @@ function buildExportJson(walk) {
 }
 
 export default function Summary({ walk, onNewWalk }) {
+  const insets = useSafeAreaInsets();
   const [copied, setCopied] = useState(false);
 
   const nonZero = ADDRESSES.filter((a) => getCount(walk, a.id) > 0)
@@ -44,7 +45,7 @@ export default function Summary({ walk, onNewWalk }) {
   }
 
   return (
-    <SafeAreaView style={s.safe}>
+    <View style={[s.safe, { paddingTop: insets.top }]}>
       <ScrollView contentContainerStyle={s.container}>
         <Text style={s.title}>Walk Complete</Text>
         <Text style={s.date}>{walk.date}</Text>
@@ -113,7 +114,7 @@ export default function Summary({ walk, onNewWalk }) {
           <Text style={s.doneBtnText}>Done — Start New Walk</Text>
         </TouchableOpacity>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
