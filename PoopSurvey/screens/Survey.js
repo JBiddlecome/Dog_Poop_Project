@@ -99,7 +99,7 @@ export default function Survey({ walk: initialWalk, onEnd }) {
     : gpsStatus === 'error' ? 'GPS error' : 'Searching…';
 
   return (
-    <View style={[s.safe, { paddingTop: safeTop(insets) }]}>
+    <View style={s.safe}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
 
         {/* Header */}
@@ -186,7 +186,7 @@ export default function Survey({ walk: initialWalk, onEnd }) {
 
       {/* Address picker modal */}
       <Modal visible={pickerVisible} animationType="slide" presentationStyle="pageSheet">
-        <View style={[{ flex: 1, backgroundColor: '#fff' }, { paddingTop: safeTop(insets) }]}>
+        <View style={{ flex: 1, backgroundColor: '#fff' }}>
           <View style={s.modalHeader}>
             <Text style={s.modalTitle}>Select Address</Text>
             <TouchableOpacity onPress={() => setPickerVisible(false)}>

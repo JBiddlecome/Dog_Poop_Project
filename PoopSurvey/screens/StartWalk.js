@@ -46,7 +46,7 @@ export default function StartWalk({ onStart }) {
   }
 
   return (
-    <View style={[s.safe, { paddingTop: safeTop(insets) }]}>
+    <View style={s.safe}>
       <ScrollView contentContainerStyle={s.container}>
         <Text style={s.title}>🐾 Poop Survey</Text>
         <Text style={s.subtitle}>Block 1 · Burbank, CA</Text>
