@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView, Platform, Alert, FlatList, Modal, Keyboard, ScrollView,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { safeTop } from '../utils/safeTop';
 import * as Location from 'expo-location';
 import { findNearest, ADDRESSES } from '../utils/nearest';
 import { saveWalk, getCount, setCount, totalPoops, addressesWithPoops } from '../utils/storage';
@@ -98,7 +99,7 @@ export default function Survey({ walk: initialWalk, onEnd }) {
     : gpsStatus === 'error' ? 'GPS error' : 'Searching…';
 
   return (
-    <View style={[s.safe, { paddingTop: insets.top }]}>
+    <View style={[s.safe, { paddingTop: safeTop(insets) }]}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
 
         {/* Header */}
@@ -185,7 +186,7 @@ export default function Survey({ walk: initialWalk, onEnd }) {
 
       {/* Address picker modal */}
       <Modal visible={pickerVisible} animationType="slide" presentationStyle="pageSheet">
-        <View style={[{ flex: 1, backgroundColor: '#fff' }, { paddingTop: insets.top }]}>
+        <View style={[{ flex: 1, backgroundColor: '#fff' }, { paddingTop: safeTop(insets) }]}>
           <View style={s.modalHeader}>
             <Text style={s.modalTitle}>Select Address</Text>
             <TouchableOpacity onPress={() => setPickerVisible(false)}>

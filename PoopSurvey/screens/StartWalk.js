@@ -3,6 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { safeTop } from '../utils/safeTop';
 import { loadWalk, buildEmptyWalk, clearWalk, totalPoops, addressesWithPoops } from '../utils/storage';
 
 function todayStr() {
@@ -45,7 +46,7 @@ export default function StartWalk({ onStart }) {
   }
 
   return (
-    <View style={[s.safe, { paddingTop: insets.top }]}>
+    <View style={[s.safe, { paddingTop: safeTop(insets) }]}>
       <ScrollView contentContainerStyle={s.container}>
         <Text style={s.title}>🐾 Poop Survey</Text>
         <Text style={s.subtitle}>Block 1 · Burbank, CA</Text>

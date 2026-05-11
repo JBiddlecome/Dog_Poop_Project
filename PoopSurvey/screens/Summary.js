@@ -3,6 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert, Share, Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { safeTop } from '../utils/safeTop';
 import * as Clipboard from 'expo-clipboard';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
@@ -45,7 +46,7 @@ export default function Summary({ walk, onNewWalk }) {
   }
 
   return (
-    <View style={[s.safe, { paddingTop: insets.top }]}>
+    <View style={[s.safe, { paddingTop: safeTop(insets) }]}>
       <ScrollView contentContainerStyle={s.container}>
         <Text style={s.title}>Walk Complete</Text>
         <Text style={s.date}>{walk.date}</Text>
