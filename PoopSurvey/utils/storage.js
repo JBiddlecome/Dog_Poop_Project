@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { distanceFeet } from './haversine';
 
 const WALK_KEY = 'current_walk';
+const PROXIMITY_FT = 60; // taps within 60 ft of an existing entry count as the same address
 
 export async function saveWalk(walk) {
   await AsyncStorage.setItem(WALK_KEY, JSON.stringify(walk));
@@ -18,31 +20,32 @@ export async function clearWalk() {
 // walk shape:
 // {
 //   date: "2026-05-11",
-//   counts: { "1": 2, "3": 0, ... }  — keyed by address id (string)
+//   locations: [
+//     { address: "2300 N Niagara St", lat: 34.1953, lng: -118.3087, count: 3 }
+//   ]
 // }
+
 export function buildEmptyWalk(dateStr) {
-  return { date: dateStr, counts: {} };
-}
-
-export function getCount(walk, addressId) {
-  return walk.counts[String(addressId)] ?? 0;
-}
-
-export function setCount(walk, addressId, value) {
-  const next = { ...walk, counts: { ...walk.counts } };
-  const v = Math.max(0, value);
-  if (v === 0) {
-    delete next.counts[String(addressId)];
-  } else {
-    next.counts[String(addressId)] = v;
-  }
-  return next;
+  return { date: dateStr, locations: [] };
 }
 
 export function totalPoops(walk) {
-  return Object.values(walk.counts).reduce((s, n) => s + n, 0);
+  return walk.locations.reduce((s, l) => s + l.count, 0);
 }
 
-export function addressesWithPoops(walk) {
-  return Object.keys(walk.counts).filter(k => walk.counts[k] > 0).length;
+// Records a poop tap. If an existing location is within PROXIMITY_FT feet,
+// increments its count. Otherwise adds a new entry.
+export function addOrIncrementLocation(walk, lat, lng, address) {
+  const locations = walk.locations.map((l) => ({ ...l }));
+
+  for (let i = 0; i < locations.length; i++) {
+    const d = distanceFeet({ lat, lng }, { lat: locations[i].lat, lng: locations[i].lng });
+    if (d <= PROXIMITY_FT) {
+      locations[i].count += 1;
+      return { ...walk, locations };
+    }
+  }
+
+  locations.push({ address, lat, lng, count: 1 });
+  return { ...walk, locations };
 }
