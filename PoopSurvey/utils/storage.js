@@ -10,7 +10,11 @@ export async function saveWalk(walk) {
 
 export async function loadWalk() {
   const raw = await AsyncStorage.getItem(WALK_KEY);
-  return raw ? JSON.parse(raw) : null;
+  if (!raw) return null;
+  const walk = JSON.parse(raw);
+  // Discard walks saved by the old schema (had counts:{} instead of locations:[])
+  if (!Array.isArray(walk.locations)) return null;
+  return walk;
 }
 
 export async function clearWalk() {
@@ -30,7 +34,7 @@ export function buildEmptyWalk(dateStr) {
 }
 
 export function totalPoops(walk) {
-  return walk.locations.reduce((s, l) => s + l.count, 0);
+  return (walk.locations ?? []).reduce((s, l) => s + l.count, 0);
 }
 
 // Records a poop tap. If an existing location is within PROXIMITY_FT feet,
