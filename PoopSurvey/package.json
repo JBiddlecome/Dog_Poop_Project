@@ -7,20 +7,9 @@
     "android": "expo start --android"
   },
   "dependencies": {
-    "expo": "~55.0.0",
-    "expo-location": "*",
-    "expo-clipboard": "*",
-    "expo-sharing": "*",
-    "expo-file-system": "*",
-    "@react-native-async-storage/async-storage": "*",
-    "react": "19.2.3",
-    "react-native": "0.85.3",
-    "react-native-safe-area-context": "*",
-    "react-native-screens": "*",
-    "react-native-maps": "*"
+    "expo": "~55.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0",
-    "babel-preset-expo": "*"
+    "@babel/core": "*"
   }
 }
