@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { safeTop } from '../utils/safeTop';
 import { loadWalk, buildEmptyWalk, clearWalk, totalPoops, addressesWithPoops } from '../utils/storage';
 
 function todayStr() {
@@ -11,7 +9,6 @@ function todayStr() {
 }
 
 export default function StartWalk({ onStart }) {
-  const insets = useSafeAreaInsets();
   const [savedWalk, setSavedWalk] = useState(null);
 
   useEffect(() => {

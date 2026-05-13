@@ -37,6 +37,10 @@ export function totalPoops(walk) {
   return (walk.locations ?? []).reduce((s, l) => s + l.count, 0);
 }
 
+export function addressesWithPoops(walk) {
+  return (walk.locations ?? []).length;
+}
+
 // Records a poop tap. If an existing location is within PROXIMITY_FT feet,
 // increments its count. Otherwise adds a new entry.
 export function addOrIncrementLocation(walk, lat, lng, address) {
