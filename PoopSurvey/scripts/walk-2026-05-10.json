@@ -1,0 +1,131 @@
+{
+  "walkDate": "2026-05-10",
+  "locations": [
+    {
+      "address": "2341 N Catalina St",
+      "count": 5,
+      "lat": 34.1953464,
+      "lng": -118.3416798
+    },
+    {
+      "address": "2333 N Catalina St",
+      "count": 3,
+      "lat": 34.1952724,
+      "lng": -118.3415707
+    },
+    {
+      "address": "2331 N Catalina St",
+      "count": 1,
+      "lat": 34.19494,
+      "lng": -118.34165
+    },
+    {
+      "address": "2323 N Catalina St",
+      "count": 1,
+      "lat": 34.1947396,
+      "lng": -118.3413392
+    },
+    {
+      "address": "2321 N Catalina St",
+      "count": 2,
+      "lat": 34.1945495,
+      "lng": -118.3413048
+    },
+    {
+      "address": "2319 N Catalina St",
+      "count": 1,
+      "lat": 34.19460,
+      "lng": -118.34148
+    },
+    {
+      "address": "2307 N Catalina St",
+      "count": 1,
+      "lat": 34.1940804,
+      "lng": -118.3413592
+    },
+    {
+      "address": "2223 N Catalina St",
+      "count": 2,
+      "lat": 34.19309,
+      "lng": -118.34151
+    },
+    {
+      "address": "2220 N Niagara St",
+      "count": 3,
+      "lat": 34.1926097,
+      "lng": -118.342334
+    },
+    {
+      "address": "2222 N Niagara St",
+      "count": 1,
+      "lat": 34.19314,
+      "lng": -118.34212
+    },
+    {
+      "address": "2230 N Niagara St",
+      "count": 1,
+      "lat": 34.19322,
+      "lng": -118.34215
+    },
+    {
+      "address": "2234 N Niagara St",
+      "count": 5,
+      "lat": 34.1932076,
+      "lng": -118.3423011
+    },
+    {
+      "address": "2236 N Niagara St",
+      "count": 1,
+      "lat": 34.19346,
+      "lng": -118.34210
+    },
+    {
+      "address": "2246 N Niagara St",
+      "count": 1,
+      "lat": 34.19365,
+      "lng": -118.34210
+    },
+    {
+      "address": "2300 N Niagara St",
+      "count": 11,
+      "lat": 34.1936479,
+      "lng": -118.3422985
+    },
+    {
+      "address": "2310 N Niagara St",
+      "count": 14,
+      "lat": 34.19436,
+      "lng": -118.34208
+    },
+    {
+      "address": "2314 N Niagara St",
+      "count": 8,
+      "lat": 34.19450,
+      "lng": -118.34208
+    },
+    {
+      "address": "2318 N Niagara St",
+      "count": 7,
+      "lat": 34.1945794,
+      "lng": -118.342275
+    },
+    {
+      "address": "2320 N Niagara St",
+      "count": 1,
+      "lat": 34.19478,
+      "lng": -118.34209
+    },
+    {
+      "address": "2324 N Niagara St",
+      "count": 2,
+      "lat": 34.1947734,
+      "lng": -118.3422857
+    },
+    {
+      "address": "2328 N Niagara St",
+      "count": 3,
+      "lat": 34.19501,
+      "lng": -118.34216
+    }
+  ]
+}
