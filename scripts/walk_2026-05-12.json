@@ -1,0 +1,101 @@
+{
+  "walkDate": "2026-05-12",
+  "locations": [
+    {
+      "address": "2345 N Catalina St",
+      "count": 1
+    },
+    {
+      "address": "2341 N Catalina St",
+      "count": 11
+    },
+    {
+      "address": "2333 N Catalina St",
+      "count": 3
+    },
+    {
+      "address": "2331 N Catalina St",
+      "count": 1
+    },
+    {
+      "address": "2323 N Catalina St",
+      "count": 1
+    },
+    {
+      "address": "2321 N Catalina St",
+      "count": 3
+    },
+    {
+      "address": "2319 N Catalina St",
+      "count": 5
+    },
+    {
+      "address": "2311 N Catalina St",
+      "count": 1
+    },
+    {
+      "address": "2307 N Catalina St",
+      "count": 2
+    },
+    {
+      "address": "2255 N Catalina St",
+      "count": 1
+    },
+    {
+      "address": "2247 N Catalina St",
+      "count": 4
+    },
+    {
+      "address": "2223 N Catalina St",
+      "count": 3
+    },
+    {
+      "address": "2212 N Niagara St",
+      "count": 5
+    },
+    {
+      "address": "2220 N Niagara St",
+      "count": 8
+    },
+    {
+      "address": "2236 N Niagara St",
+      "count": 1
+    },
+    {
+      "address": "2236 1/2 N Niagara St",
+      "count": 1
+    },
+    {
+      "address": "2300 N Niagara St",
+      "count": 2
+    },
+    {
+      "address": "2310 N Niagara St",
+      "count": 16
+    },
+    {
+      "address": "2314 N Niagara St",
+      "count": 3
+    },
+    {
+      "address": "2318 N Niagara St",
+      "count": 5
+    },
+    {
+      "address": "2320 N Niagara St",
+      "count": 1
+    },
+    {
+      "address": "2324 N Niagara St",
+      "count": 2
+    },
+    {
+      "address": "2328 N Niagara St",
+      "count": 1
+    },
+    {
+      "address": "2330 N Niagara St",
+      "count": 2
+    }
+  ]
+}
