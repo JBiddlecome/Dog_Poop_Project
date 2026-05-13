@@ -1,0 +1,1 @@
+C:\Users\jakeb\GitHub Local\Dog_Poop_Project\PoopSurvey\node_modules\react-native\ReactAndroid\cmake-utils\default-app-setup\CMakeLists.txt

@@ -1,0 +1,31 @@
+{
+  "buildFiles": [
+    "C:\\Users\\jakeb\\GitHub Local\\Dog_Poop_Project\\PoopSurvey\\node_modules\\react-native\\ReactAndroid\\cmake-utils\\default-app-setup\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "C:\\Users\\jakeb\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+      "-C",
+      "C:\\Users\\jakeb\\GitHub Local\\Dog_Poop_Project\\PoopSurvey\\android\\app\\.cxx\\Debug\\2h4m425r\\x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "C:\\Users\\jakeb\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+    "-C",
+    "C:\\Users\\jakeb\\GitHub Local\\Dog_Poop_Project\\PoopSurvey\\android\\app\\.cxx\\Debug\\2h4m425r\\x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "appmodules::@6890427a1f51a3e7e1df": {
+      "artifactName": "appmodules",
+      "abi": "x86",
+      "output": "C:\\Users\\jakeb\\GitHub Local\\Dog_Poop_Project\\PoopSurvey\\android\\app\\build\\intermediates\\cxx\\Debug\\2h4m425r\\obj\\x86\\libappmodules.so",
+      "runtimeFiles": [
+        "C:\\Users\\jakeb\\.gradle\\caches\\8.13\\transforms\\b1f23f774949329b63cc174fff1692bf\\transformed\\fbjni-0.7.0\\prefab\\modules\\fbjni\\libs\\android.x86\\libfbjni.so",
+        "C:\\Users\\jakeb\\.gradle\\caches\\8.13\\transforms\\b3d7480844c541b4bd7c4871eaa4d7df\\transformed\\react-android-0.83.6-debug\\prefab\\modules\\jsi\\libs\\android.x86\\libjsi.so",
+        "C:\\Users\\jakeb\\.gradle\\caches\\8.13\\transforms\\b3d7480844c541b4bd7c4871eaa4d7df\\transformed\\react-android-0.83.6-debug\\prefab\\modules\\reactnative\\libs\\android.x86\\libreactnative.so"
+      ]
+    }
+  }
+}
