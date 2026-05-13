@@ -9,8 +9,6 @@ cd PoopSurvey
 npm install
 ```
 
-Install **Expo Go** on your Android phone from the Play Store.
-
 ## Before your first walk — geocode addresses
 
 The app ships with approximate GPS coordinates. Run this once to get accurate ones:
@@ -19,15 +17,18 @@ The app ships with approximate GPS coordinates. Run this once to get accurate on
 node scripts/geocode-addresses.js
 ```
 
-Takes ~1 minute (rate-limited to 1 req/sec). Overwrites `data/addresses.js` with real coordinates. Restart Expo after.
+Takes ~1 minute (rate-limited to 1 req/sec). Overwrites `data/addresses.js` with real coordinates.
 
-## Running the app
+## Running the app (Development Build)
 
-```bash
-npx expo start --android
-```
+Since this project now uses native modules, you must use a **Development Build** instead of the standard Expo Go app.
 
-Scan the QR code with Expo Go. The app will load on your phone.
+1. **Connect a device** or start an Android Emulator.
+2. **Build and install** the app (run from the `PoopSurvey` root):
+   ```bash
+   npx expo run:android
+   ```
+3. This will install a "Poop Survey" app on your device. Once installed, it will automatically start the Metro bundler.
 
 ## Workflow
 
@@ -38,7 +39,7 @@ Scan the QR code with Expo Go. The app will load on your phone.
 
 ## Merging walk data into the website
 
-After your walk, get the JSON onto your laptop (email it, AirDrop it, paste from clipboard), then:
+After your walk, get the JSON onto your laptop (email it, paste from clipboard), then:
 
 ```bash
 # From the Dog_Poop_Project root:
@@ -55,13 +56,12 @@ git commit -m "Add walk 2026-05-11"
 git push
 ```
 
-Render auto-deploys. The heat map updates live.
-
 ## Files
 
 ```
 PoopSurvey/
 ├── App.js                        simple state-machine navigation
+├── android/                      Native Android project files
 ├── screens/
 │   ├── StartWalk.js              date picker + start/resume
 │   ├── Survey.js                 GPS counter UI (main screen)
