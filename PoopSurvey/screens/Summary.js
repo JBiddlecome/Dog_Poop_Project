@@ -3,7 +3,8 @@ import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator,
 } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
-import * as FileSystem from 'expo-file-system';
+// Import from the legacy path to fix the deprecation crash in Expo 55
+import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 import { totalPoops, clearWalk } from '../utils/storage';
 import { SITE_URL, UPLOAD_PASSWORD } from '../utils/uploadConfig';
@@ -29,13 +30,23 @@ export default function Summary({ walk, onNewWalk, onViewMap }) {
   }
 
   async function handleShare() {
-    const json = buildExportJson(walk);
-    const path = FileSystem.cacheDirectory + `walk-${walk.date}.json`;
-    await FileSystem.writeAsStringAsync(path, json, { encoding: FileSystem.EncodingType.UTF8 });
-    await Sharing.shareAsync(path, {
-      mimeType: 'application/json',
-      dialogTitle: `Walk data ${walk.date}`,
-    });
+    try {
+      const json = buildExportJson(walk);
+      // Sanitize filename: replace characters that are invalid on some filesystems
+      const safeDate = walk.date.replace(/[/\\?%*:|"<>]/g, '-');
+      const path = FileSystem.cacheDirectory + `walk-${safeDate}.json`;
+
+      // Use the legacy write method
+      await FileSystem.writeAsStringAsync(path, json, { encoding: 'utf8' });
+
+      await Sharing.shareAsync(path, {
+        mimeType: 'application/json',
+        dialogTitle: `Walk data ${walk.date}`,
+      });
+    } catch (error) {
+      console.error("Sharing failed:", error);
+      alert("Could not share file. Try copying the JSON instead.");
+    }
   }
 
   async function handleUpload() {
