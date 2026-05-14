@@ -1,3 +1,15 @@
 C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/CMakeFiles/appmodules.dir
 C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/CMakeFiles/edit_cache.dir
 C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/CMakeFiles/rebuild_cache.dir
+C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/rnasyncstorage_autolinked_build/CMakeFiles/react_codegen_rnasyncstorage.dir
+C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/rnasyncstorage_autolinked_build/CMakeFiles/edit_cache.dir
+C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/rnasyncstorage_autolinked_build/CMakeFiles/rebuild_cache.dir
+C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/safeareacontext_autolinked_build/CMakeFiles/react_codegen_safeareacontext.dir
+C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/safeareacontext_autolinked_build/CMakeFiles/edit_cache.dir
+C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/safeareacontext_autolinked_build/CMakeFiles/rebuild_cache.dir
+C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/rnscreens_autolinked_build/CMakeFiles/react_codegen_rnscreens.dir
+C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/rnscreens_autolinked_build/CMakeFiles/edit_cache.dir
+C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/rnscreens_autolinked_build/CMakeFiles/rebuild_cache.dir
+C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/RNMapsSpecs_autolinked_build/CMakeFiles/react_codegen_RNMapsSpecs.dir
+C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/RNMapsSpecs_autolinked_build/CMakeFiles/edit_cache.dir
+C:/Users/jakeb/GitHub Local/Dog_Poop_Project/PoopSurvey/android/app/.cxx/Debug/2h4m425r/x86/RNMapsSpecs_autolinked_build/CMakeFiles/rebuild_cache.dir

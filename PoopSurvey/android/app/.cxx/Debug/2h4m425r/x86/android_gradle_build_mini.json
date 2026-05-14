@@ -1,5 +1,9 @@
 {
   "buildFiles": [
+    "C:\\Users\\jakeb\\GitHub Local\\Dog_Poop_Project\\PoopSurvey\\node_modules\\@react-native-async-storage\\async-storage\\android\\build\\generated\\source\\codegen\\jni\\CMakeLists.txt",
+    "C:\\Users\\jakeb\\GitHub Local\\Dog_Poop_Project\\PoopSurvey\\node_modules\\react-native-maps\\android\\src\\main\\jni\\CMakeLists.txt",
+    "C:\\Users\\jakeb\\GitHub Local\\Dog_Poop_Project\\PoopSurvey\\node_modules\\react-native-safe-area-context\\android\\src\\main\\jni\\CMakeLists.txt",
+    "C:\\Users\\jakeb\\GitHub Local\\Dog_Poop_Project\\PoopSurvey\\node_modules\\react-native-screens\\android\\src\\main\\jni\\CMakeLists.txt",
     "C:\\Users\\jakeb\\GitHub Local\\Dog_Poop_Project\\PoopSurvey\\node_modules\\react-native\\ReactAndroid\\cmake-utils\\default-app-setup\\CMakeLists.txt"
   ],
   "cleanCommandsComponents": [
@@ -17,6 +21,26 @@
     "{LIST_OF_TARGETS_TO_BUILD}"
   ],
   "libraries": {
+    "react_codegen_safeareacontext::@7984cd80db47aa7b952a": {
+      "artifactName": "react_codegen_safeareacontext",
+      "abi": "x86",
+      "output": "C:\\Users\\jakeb\\GitHub Local\\Dog_Poop_Project\\PoopSurvey\\android\\app\\build\\intermediates\\cxx\\Debug\\2h4m425r\\obj\\x86\\libreact_codegen_safeareacontext.so",
+      "runtimeFiles": [
+        "C:\\Users\\jakeb\\.gradle\\caches\\8.13\\transforms\\b1f23f774949329b63cc174fff1692bf\\transformed\\fbjni-0.7.0\\prefab\\modules\\fbjni\\libs\\android.x86\\libfbjni.so",
+        "C:\\Users\\jakeb\\.gradle\\caches\\8.13\\transforms\\b3d7480844c541b4bd7c4871eaa4d7df\\transformed\\react-android-0.83.6-debug\\prefab\\modules\\jsi\\libs\\android.x86\\libjsi.so",
+        "C:\\Users\\jakeb\\.gradle\\caches\\8.13\\transforms\\b3d7480844c541b4bd7c4871eaa4d7df\\transformed\\react-android-0.83.6-debug\\prefab\\modules\\reactnative\\libs\\android.x86\\libreactnative.so"
+      ]
+    },
+    "react_codegen_rnscreens::@25bcbd507e98d3a854ad": {
+      "artifactName": "react_codegen_rnscreens",
+      "abi": "x86",
+      "output": "C:\\Users\\jakeb\\GitHub Local\\Dog_Poop_Project\\PoopSurvey\\android\\app\\build\\intermediates\\cxx\\Debug\\2h4m425r\\obj\\x86\\libreact_codegen_rnscreens.so",
+      "runtimeFiles": [
+        "C:\\Users\\jakeb\\.gradle\\caches\\8.13\\transforms\\b3d7480844c541b4bd7c4871eaa4d7df\\transformed\\react-android-0.83.6-debug\\prefab\\modules\\reactnative\\libs\\android.x86\\libreactnative.so",
+        "C:\\Users\\jakeb\\.gradle\\caches\\8.13\\transforms\\b3d7480844c541b4bd7c4871eaa4d7df\\transformed\\react-android-0.83.6-debug\\prefab\\modules\\jsi\\libs\\android.x86\\libjsi.so",
+        "C:\\Users\\jakeb\\.gradle\\caches\\8.13\\transforms\\b1f23f774949329b63cc174fff1692bf\\transformed\\fbjni-0.7.0\\prefab\\modules\\fbjni\\libs\\android.x86\\libfbjni.so"
+      ]
+    },
     "appmodules::@6890427a1f51a3e7e1df": {
       "artifactName": "appmodules",
       "abi": "x86",
@@ -26,6 +50,16 @@
         "C:\\Users\\jakeb\\.gradle\\caches\\8.13\\transforms\\b3d7480844c541b4bd7c4871eaa4d7df\\transformed\\react-android-0.83.6-debug\\prefab\\modules\\jsi\\libs\\android.x86\\libjsi.so",
         "C:\\Users\\jakeb\\.gradle\\caches\\8.13\\transforms\\b3d7480844c541b4bd7c4871eaa4d7df\\transformed\\react-android-0.83.6-debug\\prefab\\modules\\reactnative\\libs\\android.x86\\libreactnative.so"
       ]
+    },
+    "react_codegen_RNMapsSpecs::@5748abef1962d24942ec": {
+      "artifactName": "react_codegen_RNMapsSpecs",
+      "abi": "x86",
+      "runtimeFiles": []
+    },
+    "react_codegen_rnasyncstorage::@1596841e19ec5b9eeffe": {
+      "artifactName": "react_codegen_rnasyncstorage",
+      "abi": "x86",
+      "runtimeFiles": []
     }
   }
 }
