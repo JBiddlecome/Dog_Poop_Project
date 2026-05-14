@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet, ScrollView, Platform,
+  View, Text, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator,
 } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
-import * as FileSystem from 'expo-file-system';
+// Import from the legacy path to fix the deprecation crash in Expo 55
+import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 import { totalPoops, clearWalk } from '../utils/storage';
+import { SITE_URL, UPLOAD_PASSWORD } from '../utils/uploadConfig';
 
 function buildExportJson(walk) {
   return JSON.stringify({
@@ -15,7 +17,9 @@ function buildExportJson(walk) {
 }
 
 export default function Summary({ walk, onNewWalk, onViewMap }) {
-  const [copied, setCopied] = useState(false);
+  const [copied,       setCopied]       = useState(false);
+  const [uploadState,  setUploadState]  = useState('idle'); // 'idle'|'loading'|'success'|'error'
+  const [uploadMsg,    setUploadMsg]    = useState('');
 
   const sorted = [...walk.locations].sort((a, b) => b.count - a.count);
 
@@ -26,13 +30,52 @@ export default function Summary({ walk, onNewWalk, onViewMap }) {
   }
 
   async function handleShare() {
-    const json = buildExportJson(walk);
-    const path = FileSystem.cacheDirectory + `walk-${walk.date}.json`;
-    await FileSystem.writeAsStringAsync(path, json, { encoding: FileSystem.EncodingType.UTF8 });
-    await Sharing.shareAsync(path, {
-      mimeType: 'application/json',
-      dialogTitle: `Walk data ${walk.date}`,
-    });
+    try {
+      const json = buildExportJson(walk);
+      // Sanitize filename: replace characters that are invalid on some filesystems
+      const safeDate = walk.date.replace(/[/\\?%*:|"<>]/g, '-');
+      const path = FileSystem.cacheDirectory + `walk-${safeDate}.json`;
+
+      // Use the legacy write method
+      await FileSystem.writeAsStringAsync(path, json, { encoding: 'utf8' });
+
+      await Sharing.shareAsync(path, {
+        mimeType: 'application/json',
+        dialogTitle: `Walk data ${walk.date}`,
+      });
+    } catch (error) {
+      console.error("Sharing failed:", error);
+      alert("Could not share file. Try copying the JSON instead.");
+    }
+  }
+
+  async function handleUpload() {
+    setUploadState('loading');
+    setUploadMsg('');
+    try {
+      const res = await fetch(`${SITE_URL}/api/upload-walk`, {
+        method: 'POST',
+        headers: {
+          'Content-Type':  'application/json',
+          'Authorization': `Bearer ${UPLOAD_PASSWORD}`,
+        },
+        body: JSON.stringify({
+          walkDate:  walk.date,
+          locations: walk.locations,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        setUploadState('success');
+        setUploadMsg(data.message ?? 'Uploaded!');
+      } else {
+        setUploadState('error');
+        setUploadMsg(data.error ?? `Error ${res.status}`);
+      }
+    } catch (err) {
+      setUploadState('error');
+      setUploadMsg('Network error — check your connection.');
+    }
   }
 
   async function handleDone() {
@@ -88,11 +131,43 @@ export default function Summary({ walk, onNewWalk, onViewMap }) {
           </View>
         )}
 
-        {/* Export */}
+        {/* Upload to website */}
+        <View style={s.uploadCard}>
+          <Text style={s.uploadTitle}>Upload to Website</Text>
+          <Text style={s.uploadBody}>
+            Send this walk directly to the website. The heat map will update in ~2 minutes.
+          </Text>
+          <TouchableOpacity
+            style={[
+              s.uploadBtn,
+              uploadState === 'success' && s.uploadBtnSuccess,
+              uploadState === 'error'   && s.uploadBtnError,
+              uploadState === 'loading' && s.uploadBtnLoading,
+            ]}
+            onPress={handleUpload}
+            disabled={uploadState === 'loading' || uploadState === 'success'}
+          >
+            {uploadState === 'loading'
+              ? <ActivityIndicator color="#fff" />
+              : <Text style={s.uploadBtnText}>
+                  {uploadState === 'success' ? '✓ Uploaded'
+                    : uploadState === 'error' ? 'Retry Upload'
+                    : 'Upload to Website'}
+                </Text>
+            }
+          </TouchableOpacity>
+          {uploadMsg !== '' && (
+            <Text style={[s.uploadFeedback, uploadState === 'error' && s.uploadFeedbackError]}>
+              {uploadMsg}
+            </Text>
+          )}
+        </View>
+
+        {/* Manual export fallback */}
         <View style={s.exportCard}>
-          <Text style={s.exportTitle}>Export Walk Data</Text>
+          <Text style={s.exportTitle}>Manual Export</Text>
           <Text style={s.exportBody}>
-            Share the JSON file to your laptop, then merge it into your website data.
+            Or copy / share the raw JSON to merge manually.
           </Text>
           <View style={s.exportBtns}>
             <TouchableOpacity style={s.copyBtn} onPress={handleCopy}>
@@ -151,6 +226,22 @@ const s = StyleSheet.create({
   badgeHot: { backgroundColor: '#fee2e2' },
   badgeText: { fontSize: 14, fontWeight: '700', color: '#16a34a' },
   badgeTextHot: { color: '#dc2626' },
+
+  uploadCard: {
+    backgroundColor: '#f0fdf4', borderRadius: 16, padding: 18, gap: 10,
+  },
+  uploadTitle: { fontSize: 15, fontWeight: '700', color: '#14532d' },
+  uploadBody: { fontSize: 13, color: '#166534', lineHeight: 20 },
+  uploadBtn: {
+    backgroundColor: '#16a34a', borderRadius: 10,
+    paddingVertical: 14, alignItems: 'center', marginTop: 4,
+  },
+  uploadBtnSuccess: { backgroundColor: '#15803d' },
+  uploadBtnError:   { backgroundColor: '#dc2626' },
+  uploadBtnLoading: { backgroundColor: '#86efac' },
+  uploadBtnText: { color: '#fff', fontWeight: '700', fontSize: 15 },
+  uploadFeedback: { fontSize: 12, color: '#166534', textAlign: 'center' },
+  uploadFeedbackError: { color: '#dc2626' },
 
   exportCard: {
     backgroundColor: '#f0f9ff', borderRadius: 16, padding: 18, gap: 10,
