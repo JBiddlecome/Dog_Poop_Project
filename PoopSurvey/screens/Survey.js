@@ -5,6 +5,9 @@ import {
 } from 'react-native';
 import * as Location from 'expo-location';
 import { saveWalk, addOrIncrementLocation, totalPoops } from '../utils/storage';
+import { distanceFeet } from '../utils/haversine';
+
+const PROXIMITY_FT = 60;
 
 const GPS_INTERVAL_MS = 3000;
 
@@ -14,9 +17,10 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
   const [currentAddress, setCurrentAddress] = useState('Locating…');
   const [gpsStatus, setGpsStatus] = useState('searching');
   const [recording, setRecording] = useState(false);
-  const walkRef = useRef(walk);
-  const posRef = useRef(null);
-  const addrRef = useRef('Unknown address');
+  const walkRef   = useRef(walk);
+  const posRef    = useRef(null);
+  const addrRef   = useRef('Unknown address');
+  const visitedRef = useRef([]); // every distinct GPS position walked past this session
 
   useEffect(() => { walkRef.current = walk; }, [walk]);
 
@@ -53,6 +57,14 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
             setCurrentAddress(fallback);
             addrRef.current = fallback;
           }
+
+          // Track every distinct position walked past so we can add 0s at walk end
+          const isNew = !visitedRef.current.some(
+            v => distanceFeet({ lat: v.lat, lng: v.lng }, { lat, lng }) <= PROXIMITY_FT
+          );
+          if (isNew) {
+            visitedRef.current.push({ address: addrRef.current, lat, lng });
+          }
         }
       );
     })();
@@ -71,13 +83,28 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
     }
   }
 
+  // For every position walked past without a + press, add count: 0 so the
+  // website can compute a true average (clean passes count, not just poop days).
+  function applyZeroVisits(currentWalk) {
+    const locations = currentWalk.locations.map(l => ({ ...l }));
+    for (const v of visitedRef.current) {
+      const alreadyCounted = locations.some(
+        l => distanceFeet({ lat: l.lat, lng: l.lng }, { lat: v.lat, lng: v.lng }) <= PROXIMITY_FT
+      );
+      if (!alreadyCounted) {
+        locations.push({ address: v.address, lat: v.lat, lng: v.lng, count: 0 });
+      }
+    }
+    return { ...currentWalk, locations };
+  }
+
   function handleEndWalk() {
     Alert.alert(
       'End walk?',
       `${totalPoops(walk)} poops at ${walk.locations.length} location${walk.locations.length !== 1 ? 's' : ''}.`,
       [
         { text: 'Keep Walking', style: 'cancel' },
-        { text: 'End & Review', onPress: () => onEnd(walk) },
+        { text: 'End & Review', onPress: () => onEnd(applyZeroVisits(walkRef.current)) },
       ]
     );
   }
