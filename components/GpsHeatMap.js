@@ -14,20 +14,25 @@ function circleRadius(count) {
   return Math.min(8 + count * 3, 30); // metres, same as Android app
 }
 
-// Aggregate all locations across all walks by address string
+// Aggregate locations across walks. Only walks that actually visited an address
+// count toward its average — so unwalked streets aren't penalised with 0s.
 function aggregateLocations(walks) {
   const byAddr = new Map();
   for (const walk of walks) {
     for (const loc of walk.locations) {
       const key = loc.address;
       if (byAddr.has(key)) {
-        byAddr.get(key).count += loc.count;
+        const e = byAddr.get(key);
+        e.total += loc.count;
+        e.walkCount += 1;
       } else {
-        byAddr.set(key, { ...loc });
+        byAddr.set(key, { ...loc, total: loc.count, walkCount: 1 });
       }
     }
   }
-  return Array.from(byAddr.values()).sort((a, b) => b.count - a.count);
+  return Array.from(byAddr.values())
+    .map(e => ({ ...e, avg: e.total / e.walkCount }))
+    .sort((a, b) => b.avg - a.avg);
 }
 
 // Block 1 center: Thornton/Empire between Niagara and Catalina in Burbank, CA
@@ -59,16 +64,18 @@ export default function GpsHeatMap({ walks }) {
       if (locations.length > 0) {
         const bounds = [];
         for (const loc of locations) {
-          const color = poopColor(loc.count);
+          const color = poopColor(loc.avg);
           L.circle([loc.lat, loc.lng], {
-            radius:      circleRadius(loc.count),
+            radius:      circleRadius(loc.avg),
             fillColor:   color,
             fillOpacity: 0.55,
             color:       color,
             weight:      2,
           })
             .bindPopup(
-              `<strong>${loc.address}</strong><br>${loc.count} poop${loc.count !== 1 ? 's' : ''} total`
+              `<strong>${loc.address}</strong><br>` +
+              `${loc.avg.toFixed(1)} avg / walk<br>` +
+              `<span style="color:#888;font-size:11px">${loc.total} total · ${loc.walkCount} walk${loc.walkCount !== 1 ? 's' : ''}</span>`
             )
             .addTo(map);
           bounds.push([loc.lat, loc.lng]);
