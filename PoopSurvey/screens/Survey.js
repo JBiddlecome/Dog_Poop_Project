@@ -5,24 +5,89 @@ import {
 } from 'react-native';
 import * as Location from 'expo-location';
 import { saveWalk, addOrIncrementLocation, totalPoops } from '../utils/storage';
+import { distanceFeet } from '../utils/haversine';
 
+const PROXIMITY_FT   = 60;
 const GPS_INTERVAL_MS = 3000;
 
+const GRASS_OPTIONS    = ['Full grass', 'Sparse', 'Dirt', 'Rocks', 'Mulch'];
+const AMENITY_OPTIONS  = ['None', 'Trash bin', 'Bag station'];
+const BUILDING_OPTIONS = ['House', 'Apartment', 'Empty'];
+
+function MetaChips({ label, options, value, onChange, allowDeselect = true }) {
+  return (
+    <View style={s.metaGroup}>
+      <Text style={s.metaGroupLabel}>{label}</Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <View style={s.chipRow}>
+          {options.map(opt => {
+            const selected = value === opt;
+            return (
+              <TouchableOpacity
+                key={opt}
+                style={[s.chip, selected && s.chipSelected]}
+                onPress={() => onChange(allowDeselect && selected ? null : opt)}
+              >
+                <Text style={[s.chipText, selected && s.chipTextSelected]}>{opt}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </ScrollView>
+    </View>
+  );
+}
+
 export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
-  const [walk, setWalk] = useState(initialWalk);
-  const [currentPos, setCurrentPos] = useState(null);
+  const [walk,          setWalk]         = useState(initialWalk);
+  const [currentPos,    setCurrentPos]   = useState(null);
   const [currentAddress, setCurrentAddress] = useState('Locating…');
-  const [gpsStatus, setGpsStatus] = useState('searching');
-  const [recording, setRecording] = useState(false);
-  const walkRef = useRef(walk);
-  const posRef = useRef(null);
-  const addrRef = useRef('Unknown address');
+  const [gpsStatus,     setGpsStatus]    = useState('searching');
+  const [recording,     setRecording]    = useState(false);
+
+  // Location metadata for the current address
+  const [grassType,     setGrassType]    = useState(null);
+  const [amenity,       setAmenity]      = useState('None');
+  const [buildingType,  setBuildingType] = useState(null);
+
+  const walkRef    = useRef(walk);
+  const posRef     = useRef(null);
+  const addrRef    = useRef('Unknown address');
+  const visitedRef = useRef([]); // each entry: { address, lat, lng, grassType, amenity, buildingType }
+
+  // Keep metaRef in sync so applyZeroVisits can use latest values
+  const metaRef = useRef({ grassType: null, amenity: 'None', buildingType: null });
+  useEffect(() => {
+    metaRef.current = { grassType, amenity, buildingType };
+  }, [grassType, amenity, buildingType]);
 
   useEffect(() => { walkRef.current = walk; }, [walk]);
+  useEffect(() => { saveWalk(walk); }, [walk]);
 
-  useEffect(() => {
-    saveWalk(walk);
-  }, [walk]);
+  // Update the visited entry closest to current position with new meta
+  function updateCurrentVisitedMeta(updates) {
+    if (!posRef.current) return;
+    const { lat, lng } = posRef.current;
+    const idx = visitedRef.current.findIndex(
+      v => distanceFeet({ lat: v.lat, lng: v.lng }, { lat, lng }) <= PROXIMITY_FT
+    );
+    if (idx >= 0) {
+      visitedRef.current[idx] = { ...visitedRef.current[idx], ...updates };
+    }
+  }
+
+  function handleGrassType(val) {
+    setGrassType(val);
+    updateCurrentVisitedMeta({ grassType: val });
+  }
+  function handleAmenity(val) {
+    setAmenity(val);
+    updateCurrentVisitedMeta({ amenity: val });
+  }
+  function handleBuildingType(val) {
+    setBuildingType(val);
+    updateCurrentVisitedMeta({ buildingType: val });
+  }
 
   useEffect(() => {
     let subscription = null;
@@ -53,6 +118,17 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
             setCurrentAddress(fallback);
             addrRef.current = fallback;
           }
+
+          // Track every distinct position walked past so we can add 0s at walk end
+          const isNew = !visitedRef.current.some(
+            v => distanceFeet({ lat: v.lat, lng: v.lng }, { lat, lng }) <= PROXIMITY_FT
+          );
+          if (isNew) {
+            visitedRef.current.push({
+              address: addrRef.current, lat, lng,
+              ...metaRef.current,
+            });
+          }
         }
       );
     })();
@@ -64,11 +140,28 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
     setRecording(true);
     try {
       const { lat, lng } = posRef.current;
-      const updated = addOrIncrementLocation(walkRef.current, lat, lng, addrRef.current);
+      const meta = { grassType, amenity, buildingType };
+      const updated = addOrIncrementLocation(walkRef.current, lat, lng, addrRef.current, meta);
       setWalk(updated);
     } finally {
       setRecording(false);
     }
+  }
+
+  // For every position walked past without a + press, add count: 0 including
+  // whatever metadata was set for that position.
+  function applyZeroVisits(currentWalk) {
+    const locations = currentWalk.locations.map(l => ({ ...l }));
+    for (const v of visitedRef.current) {
+      const alreadyCounted = locations.some(
+        l => distanceFeet({ lat: l.lat, lng: l.lng }, { lat: v.lat, lng: v.lng }) <= PROXIMITY_FT
+      );
+      if (!alreadyCounted) {
+        const { address, lat, lng, grassType: gt, amenity: am, buildingType: bt } = v;
+        locations.push({ address, lat, lng, count: 0, grassType: gt, amenity: am, buildingType: bt });
+      }
+    }
+    return { ...currentWalk, locations };
   }
 
   function handleEndWalk() {
@@ -77,7 +170,7 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
       `${totalPoops(walk)} poops at ${walk.locations.length} location${walk.locations.length !== 1 ? 's' : ''}.`,
       [
         { text: 'Keep Walking', style: 'cancel' },
-        { text: 'End & Review', onPress: () => onEnd(walk) },
+        { text: 'End & Review', onPress: () => onEnd(applyZeroVisits(walkRef.current)) },
       ]
     );
   }
@@ -106,6 +199,29 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
       <View style={s.addrBlock}>
         <Text style={s.addrLabel}>You are at</Text>
         <Text style={s.addrText} numberOfLines={2}>{currentAddress}</Text>
+      </View>
+
+      {/* Location metadata */}
+      <View style={s.metaCard}>
+        <MetaChips
+          label="GRASS"
+          options={GRASS_OPTIONS}
+          value={grassType}
+          onChange={handleGrassType}
+        />
+        <MetaChips
+          label="AMENITY"
+          options={AMENITY_OPTIONS}
+          value={amenity}
+          onChange={handleAmenity}
+          allowDeselect={false}
+        />
+        <MetaChips
+          label="BUILDING"
+          options={BUILDING_OPTIONS}
+          value={buildingType}
+          onChange={handleBuildingType}
+        />
       </View>
 
       {/* Big record button */}
@@ -172,26 +288,45 @@ const s = StyleSheet.create({
   endBtnText: { color: '#dc2626', fontWeight: '700', fontSize: 14 },
 
   addrBlock: {
-    backgroundColor: '#f8f8f8', marginHorizontal: 16, marginTop: 14,
-    borderRadius: 16, padding: 16,
+    backgroundColor: '#f8f8f8', marginHorizontal: 16, marginTop: 12,
+    borderRadius: 16, padding: 14,
   },
-  addrLabel: { fontSize: 12, color: '#888', fontWeight: '600', textTransform: 'uppercase', letterSpacing: 1 },
-  addrText: { fontSize: 22, fontWeight: '700', color: '#111', marginTop: 4 },
+  addrLabel: { fontSize: 11, color: '#888', fontWeight: '600', textTransform: 'uppercase', letterSpacing: 1 },
+  addrText: { fontSize: 20, fontWeight: '700', color: '#111', marginTop: 2 },
+
+  metaCard: {
+    marginHorizontal: 16, marginTop: 10,
+    backgroundColor: '#f8f8f8', borderRadius: 16,
+    paddingVertical: 10, paddingHorizontal: 14, gap: 8,
+  },
+  metaGroup: { gap: 4 },
+  metaGroupLabel: {
+    fontSize: 10, fontWeight: '700', color: '#aaa',
+    textTransform: 'uppercase', letterSpacing: 1,
+  },
+  chipRow: { flexDirection: 'row', gap: 6 },
+  chip: {
+    paddingHorizontal: 10, paddingVertical: 5,
+    borderRadius: 20, backgroundColor: '#e8e8e8',
+  },
+  chipSelected: { backgroundColor: '#16a34a' },
+  chipText: { fontSize: 12, color: '#555', fontWeight: '500' },
+  chipTextSelected: { color: '#fff', fontWeight: '700' },
 
   recordBtn: {
-    width: 140, height: 140, borderRadius: 70,
+    width: 112, height: 112, borderRadius: 56,
     backgroundColor: '#16a34a',
-    alignSelf: 'center', marginTop: 24,
+    alignSelf: 'center', marginTop: 16,
     alignItems: 'center', justifyContent: 'center',
-    shadowColor: '#16a34a', shadowOpacity: 0.4, shadowRadius: 16, shadowOffset: { width: 0, height: 6 },
+    shadowColor: '#16a34a', shadowOpacity: 0.4, shadowRadius: 12, shadowOffset: { width: 0, height: 4 },
     elevation: 8,
   },
   recordBtnDisabled: { backgroundColor: '#a3a3a3', shadowOpacity: 0 },
-  recordBtnText: { fontSize: 72, color: '#fff', lineHeight: 80, fontWeight: '300' },
-  recordHint: { textAlign: 'center', color: '#888', fontSize: 13, marginTop: 10 },
+  recordBtnText: { fontSize: 60, color: '#fff', lineHeight: 68, fontWeight: '300' },
+  recordHint: { textAlign: 'center', color: '#888', fontSize: 12, marginTop: 6 },
 
   liveSection: {
-    flex: 1, marginHorizontal: 16, marginTop: 20,
+    flex: 1, marginHorizontal: 16, marginTop: 14,
     borderTopWidth: 1, borderTopColor: '#eee', paddingTop: 10,
   },
   liveTitleRow: {
