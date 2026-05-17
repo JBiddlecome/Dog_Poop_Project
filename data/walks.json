@@ -559,6 +559,131 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-05-17",
+      "locations": [
+        {
+          "address": "2713 Thornton Avenue",
+          "lat": 34.1955171,
+          "lng": -118.341374,
+          "count": 1
+        },
+        {
+          "address": "2337 North Catalina Street",
+          "lat": 34.1952389,
+          "lng": -118.341333,
+          "count": 9
+        },
+        {
+          "address": "2331 North Catalina Street",
+          "lat": 34.1948802,
+          "lng": -118.3413349,
+          "count": 3
+        },
+        {
+          "address": "2321 North Catalina Street",
+          "lat": 34.1946396,
+          "lng": -118.3413334,
+          "count": 7
+        },
+        {
+          "address": "2313 North Catalina Street",
+          "lat": 34.1942894,
+          "lng": -118.341347,
+          "count": 3
+        },
+        {
+          "address": "2311 North Catalina Street",
+          "lat": 34.1940679,
+          "lng": -118.3413428,
+          "count": 1
+        },
+        {
+          "address": "2300 North Catalina Street",
+          "lat": 34.1939272,
+          "lng": -118.3412302,
+          "count": 1
+        },
+        {
+          "address": "2225 North Catalina Street",
+          "lat": 34.1928514,
+          "lng": -118.3413763,
+          "count": 1
+        },
+        {
+          "address": "2215 North Catalina Street",
+          "lat": 34.1925357,
+          "lng": -118.3413418,
+          "count": 2
+        },
+        {
+          "address": "2212 North Niagara Street",
+          "lat": 34.1925012,
+          "lng": -118.3422262,
+          "count": 7
+        },
+        {
+          "address": "2220 North Niagara Street",
+          "lat": 34.1926542,
+          "lng": -118.3423125,
+          "count": 2
+        },
+        {
+          "address": "2230 North Niagara Street",
+          "lat": 34.1930466,
+          "lng": -118.3423079,
+          "count": 1
+        },
+        {
+          "address": "2236 North Niagara Street",
+          "lat": 34.1932739,
+          "lng": -118.3422999,
+          "count": 2
+        },
+        {
+          "address": "2246 North Niagara Street",
+          "lat": 34.1936052,
+          "lng": -118.3422936,
+          "count": 1
+        },
+        {
+          "address": "2300 North Niagara Street",
+          "lat": 34.1938706,
+          "lng": -118.3423007,
+          "count": 6
+        },
+        {
+          "address": "2306 North Niagara Street",
+          "lat": 34.1940944,
+          "lng": -118.3422775,
+          "count": 19
+        },
+        {
+          "address": "2310 North Niagara Street",
+          "lat": 34.1942679,
+          "lng": -118.3422788,
+          "count": 8
+        },
+        {
+          "address": "2316 North Niagara Street",
+          "lat": 34.1944426,
+          "lng": -118.3422826,
+          "count": 2
+        },
+        {
+          "address": "2328 North Niagara Street",
+          "lat": 34.1947832,
+          "lng": -118.3422653,
+          "count": 2
+        },
+        {
+          "address": "2336 North Niagara Street",
+          "lat": 34.1950254,
+          "lng": -118.3422679,
+          "count": 1
+        }
+      ]
     }
   ]
 }
