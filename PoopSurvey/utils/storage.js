@@ -25,7 +25,12 @@ export async function clearWalk() {
 // {
 //   date: "2026-05-11",
 //   locations: [
-//     { address: "2300 N Niagara St", lat: 34.1953, lng: -118.3087, count: 3 }
+//     {
+//       address: "2300 N Niagara St", lat: 34.1953, lng: -118.3087, count: 3,
+//       grassType: "Full grass",   // "Full grass"|"Sparse"|"Dirt"|"Rocks"|"Mulch"|null
+//       amenity: "None",           // "None"|"Trash bin"|"Bag station"
+//       buildingType: "House",     // "House"|"Apartment"|"Empty"|null
+//     }
 //   ]
 // }
 
@@ -42,18 +47,19 @@ export function addressesWithPoops(walk) {
 }
 
 // Records a poop tap. If an existing location is within PROXIMITY_FT feet,
-// increments its count. Otherwise adds a new entry.
-export function addOrIncrementLocation(walk, lat, lng, address) {
+// increments its count and updates metadata. Otherwise adds a new entry.
+export function addOrIncrementLocation(walk, lat, lng, address, meta = {}) {
   const locations = walk.locations.map((l) => ({ ...l }));
 
   for (let i = 0; i < locations.length; i++) {
     const d = distanceFeet({ lat, lng }, { lat: locations[i].lat, lng: locations[i].lng });
     if (d <= PROXIMITY_FT) {
       locations[i].count += 1;
+      Object.assign(locations[i], meta);
       return { ...walk, locations };
     }
   }
 
-  locations.push({ address, lat, lng, count: 1 });
+  locations.push({ address, lat, lng, count: 1, ...meta });
   return { ...walk, locations };
 }
