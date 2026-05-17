@@ -279,6 +279,411 @@
           "lng": -118.34216
         }
       ]
+    },
+    {
+      "date": "2026-05-15",
+      "locations": [
+        {
+          "address": "2344 North Catalina Street",
+          "lat": 34.1955304,
+          "lng": -118.3411507,
+          "count": 4
+        },
+        {
+          "address": "2340 North Catalina Street",
+          "lat": 34.1952039,
+          "lng": -118.3411006,
+          "count": 2
+        },
+        {
+          "address": "2332 North Catalina Street",
+          "lat": 34.1949398,
+          "lng": -118.3411922,
+          "count": 2
+        },
+        {
+          "address": "2324 North Catalina Street",
+          "lat": 34.1947457,
+          "lng": -118.3411438,
+          "count": 3
+        },
+        {
+          "address": "2320 North Catalina Street",
+          "lat": 34.1945241,
+          "lng": -118.3411258,
+          "count": 2
+        },
+        {
+          "address": "2306 North Catalina Street",
+          "lat": 34.1943226,
+          "lng": -118.341114,
+          "count": 2
+        },
+        {
+          "address": "2308 North Catalina Street",
+          "lat": 34.1940269,
+          "lng": -118.3411403,
+          "count": 6
+        },
+        {
+          "address": "2250 North Catalina Street",
+          "lat": 34.1935806,
+          "lng": -118.3411262,
+          "count": 2
+        },
+        {
+          "address": "2242 North Catalina Street",
+          "lat": 34.1934147,
+          "lng": -118.3411397,
+          "count": 1
+        },
+        {
+          "address": "2234 North Catalina Street",
+          "lat": 34.1931263,
+          "lng": -118.3411544,
+          "count": 1
+        },
+        {
+          "address": "2226 North Catalina Street",
+          "lat": 34.1929562,
+          "lng": -118.341167,
+          "count": 2
+        },
+        {
+          "address": "2218 North Catalina Street",
+          "lat": 34.1926291,
+          "lng": -118.341179,
+          "count": 2
+        },
+        {
+          "address": "2215 North Naomi Street",
+          "lat": 34.1925559,
+          "lng": -118.3402652,
+          "count": 1
+        },
+        {
+          "address": "2223 North Naomi Street",
+          "lat": 34.1927288,
+          "lng": -118.3402293,
+          "count": 5
+        },
+        {
+          "address": "2227 North Naomi Street",
+          "lat": 34.192925,
+          "lng": -118.340259,
+          "count": 2
+        },
+        {
+          "address": "2235 North Naomi Street",
+          "lat": 34.193193,
+          "lng": -118.3402611,
+          "count": 5
+        },
+        {
+          "address": "2241 North Naomi Street",
+          "lat": 34.1933812,
+          "lng": -118.3402648,
+          "count": 1
+        },
+        {
+          "address": "2247 North Naomi Street",
+          "lat": 34.1936344,
+          "lng": -118.3402664,
+          "count": 4
+        },
+        {
+          "address": "2301 North Naomi Street",
+          "lat": 34.1939348,
+          "lng": -118.3402453,
+          "count": 3
+        },
+        {
+          "address": "2305 North Naomi Street",
+          "lat": 34.1941158,
+          "lng": -118.3402349,
+          "count": 4
+        },
+        {
+          "address": "2313 North Naomi Street",
+          "lat": 34.19431,
+          "lng": -118.3402449,
+          "count": 1
+        },
+        {
+          "address": "2325 North Naomi Street",
+          "lat": 34.1946348,
+          "lng": -118.340224,
+          "count": 4
+        },
+        {
+          "address": "2341 North Naomi Street",
+          "lat": 34.1951841,
+          "lng": -118.3402251,
+          "count": 5
+        },
+        {
+          "address": "2345 North Naomi Street",
+          "lat": 34.1953929,
+          "lng": -118.3402255,
+          "count": 2
+        }
+      ]
+    },
+    {
+      "date": "2026-05-16",
+      "locations": [
+        {
+          "address": "2345 North Naomi Street",
+          "lat": 34.195504,
+          "lng": -118.3402979,
+          "count": 4
+        },
+        {
+          "address": "2341 North Naomi Street",
+          "lat": 34.1952551,
+          "lng": -118.34021,
+          "count": 7
+        },
+        {
+          "address": "2331 North Naomi Street",
+          "lat": 34.194811,
+          "lng": -118.340229,
+          "count": 1
+        },
+        {
+          "address": "2321 North Naomi Street",
+          "lat": 34.1945113,
+          "lng": -118.3402163,
+          "count": 4
+        },
+        {
+          "address": "2313 North Naomi Street",
+          "lat": 34.1941663,
+          "lng": -118.3402242,
+          "count": 5
+        },
+        {
+          "address": "2251 North Naomi Street",
+          "lat": 34.1936662,
+          "lng": -118.3402518,
+          "count": 1
+        },
+        {
+          "address": "2241 North Naomi Street",
+          "lat": 34.1934338,
+          "lng": -118.3402829,
+          "count": 2
+        },
+        {
+          "address": "2239 North Naomi Street",
+          "lat": 34.193231,
+          "lng": -118.3402398,
+          "count": 7
+        },
+        {
+          "address": "2231 North Naomi Street",
+          "lat": 34.193008,
+          "lng": -118.3402431,
+          "count": 1
+        },
+        {
+          "address": "2223 North Naomi Street",
+          "lat": 34.1928031,
+          "lng": -118.3402612,
+          "count": 3
+        },
+        {
+          "address": "2218 North Catalina Street",
+          "lat": 34.1925877,
+          "lng": -118.3412275,
+          "count": 2
+        },
+        {
+          "address": "2222 North Catalina Street",
+          "lat": 34.1928033,
+          "lng": -118.3412177,
+          "count": 5
+        },
+        {
+          "address": "2234 North Catalina Street",
+          "lat": 34.1932169,
+          "lng": -118.3412025,
+          "count": 3
+        },
+        {
+          "address": "2242 North Catalina Street",
+          "lat": 34.1934858,
+          "lng": -118.3411999,
+          "count": 3
+        },
+        {
+          "address": "2300 North Catalina Street",
+          "lat": 34.1938775,
+          "lng": -118.341126,
+          "count": 5
+        },
+        {
+          "address": "2306 North Catalina Street",
+          "lat": 34.1942646,
+          "lng": -118.3411671,
+          "count": 3
+        },
+        {
+          "address": "2324 North Catalina Street",
+          "lat": 34.1946826,
+          "lng": -118.341186,
+          "count": 3
+        },
+        {
+          "address": "2332 North Catalina Street",
+          "lat": 34.1948941,
+          "lng": -118.3411834,
+          "count": 3
+        },
+        {
+          "address": "2336 North Catalina Street",
+          "lat": 34.1951772,
+          "lng": -118.3411697,
+          "count": 2
+        },
+        {
+          "address": "2344 North Catalina Street",
+          "lat": 34.1953688,
+          "lng": -118.3411502,
+          "count": 2
+        },
+        {
+          "address": "2713 Thornton Avenue",
+          "lat": 34.1955107,
+          "lng": -118.3413688,
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "2026-05-17",
+      "locations": [
+        {
+          "address": "2713 Thornton Avenue",
+          "lat": 34.1955171,
+          "lng": -118.341374,
+          "count": 1
+        },
+        {
+          "address": "2337 North Catalina Street",
+          "lat": 34.1952389,
+          "lng": -118.341333,
+          "count": 9
+        },
+        {
+          "address": "2331 North Catalina Street",
+          "lat": 34.1948802,
+          "lng": -118.3413349,
+          "count": 3
+        },
+        {
+          "address": "2321 North Catalina Street",
+          "lat": 34.1946396,
+          "lng": -118.3413334,
+          "count": 7
+        },
+        {
+          "address": "2313 North Catalina Street",
+          "lat": 34.1942894,
+          "lng": -118.341347,
+          "count": 3
+        },
+        {
+          "address": "2311 North Catalina Street",
+          "lat": 34.1940679,
+          "lng": -118.3413428,
+          "count": 1
+        },
+        {
+          "address": "2300 North Catalina Street",
+          "lat": 34.1939272,
+          "lng": -118.3412302,
+          "count": 1
+        },
+        {
+          "address": "2225 North Catalina Street",
+          "lat": 34.1928514,
+          "lng": -118.3413763,
+          "count": 1
+        },
+        {
+          "address": "2215 North Catalina Street",
+          "lat": 34.1925357,
+          "lng": -118.3413418,
+          "count": 2
+        },
+        {
+          "address": "2212 North Niagara Street",
+          "lat": 34.1925012,
+          "lng": -118.3422262,
+          "count": 7
+        },
+        {
+          "address": "2220 North Niagara Street",
+          "lat": 34.1926542,
+          "lng": -118.3423125,
+          "count": 2
+        },
+        {
+          "address": "2230 North Niagara Street",
+          "lat": 34.1930466,
+          "lng": -118.3423079,
+          "count": 1
+        },
+        {
+          "address": "2236 North Niagara Street",
+          "lat": 34.1932739,
+          "lng": -118.3422999,
+          "count": 2
+        },
+        {
+          "address": "2246 North Niagara Street",
+          "lat": 34.1936052,
+          "lng": -118.3422936,
+          "count": 1
+        },
+        {
+          "address": "2300 North Niagara Street",
+          "lat": 34.1938706,
+          "lng": -118.3423007,
+          "count": 6
+        },
+        {
+          "address": "2306 North Niagara Street",
+          "lat": 34.1940944,
+          "lng": -118.3422775,
+          "count": 19
+        },
+        {
+          "address": "2310 North Niagara Street",
+          "lat": 34.1942679,
+          "lng": -118.3422788,
+          "count": 8
+        },
+        {
+          "address": "2316 North Niagara Street",
+          "lat": 34.1944426,
+          "lng": -118.3422826,
+          "count": 2
+        },
+        {
+          "address": "2328 North Niagara Street",
+          "lat": 34.1947832,
+          "lng": -118.3422653,
+          "count": 2
+        },
+        {
+          "address": "2336 North Niagara Street",
+          "lat": 34.1950254,
+          "lng": -118.3422679,
+          "count": 1
+        }
+      ]
     }
   ]
 }

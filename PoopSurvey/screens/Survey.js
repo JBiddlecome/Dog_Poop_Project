@@ -7,6 +7,8 @@ import * as Location from 'expo-location';
 import { saveWalk, addOrIncrementLocation, totalPoops } from '../utils/storage';
 import { distanceFeet } from '../utils/haversine';
 
+const PROXIMITY_FT = 60;
+
 const PROXIMITY_FT   = 60;
 const GPS_INTERVAL_MS = 3000;
 
@@ -42,8 +44,12 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
   const [walk,          setWalk]         = useState(initialWalk);
   const [currentPos,    setCurrentPos]   = useState(null);
   const [currentAddress, setCurrentAddress] = useState('Locating…');
-  const [gpsStatus,     setGpsStatus]    = useState('searching');
-  const [recording,     setRecording]    = useState(false);
+  const [gpsStatus, setGpsStatus] = useState('searching');
+  const [recording, setRecording] = useState(false);
+  const walkRef   = useRef(walk);
+  const posRef    = useRef(null);
+  const addrRef   = useRef('Unknown address');
+  const visitedRef = useRef([]); // every distinct GPS position walked past this session
 
   // Location metadata for the current address
   const [grassType,     setGrassType]    = useState(null);
@@ -124,10 +130,7 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
             v => distanceFeet({ lat: v.lat, lng: v.lng }, { lat, lng }) <= PROXIMITY_FT
           );
           if (isNew) {
-            visitedRef.current.push({
-              address: addrRef.current, lat, lng,
-              ...metaRef.current,
-            });
+            visitedRef.current.push({ address: addrRef.current, lat, lng });
           }
         }
       );
@@ -148,8 +151,8 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
     }
   }
 
-  // For every position walked past without a + press, add count: 0 including
-  // whatever metadata was set for that position.
+  // For every position walked past without a + press, add count: 0 so the
+  // website can compute a true average (clean passes count, not just poop days).
   function applyZeroVisits(currentWalk) {
     const locations = currentWalk.locations.map(l => ({ ...l }));
     for (const v of visitedRef.current) {
@@ -157,8 +160,7 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
         l => distanceFeet({ lat: l.lat, lng: l.lng }, { lat: v.lat, lng: v.lng }) <= PROXIMITY_FT
       );
       if (!alreadyCounted) {
-        const { address, lat, lng, grassType: gt, amenity: am, buildingType: bt } = v;
-        locations.push({ address, lat, lng, count: 0, grassType: gt, amenity: am, buildingType: bt });
+        locations.push({ address: v.address, lat: v.lat, lng: v.lng, count: 0 });
       }
     }
     return { ...currentWalk, locations };
