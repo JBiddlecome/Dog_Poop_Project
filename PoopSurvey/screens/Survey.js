@@ -43,8 +43,12 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
   const [walk,          setWalk]         = useState(initialWalk);
   const [currentPos,    setCurrentPos]   = useState(null);
   const [currentAddress, setCurrentAddress] = useState('Locating…');
-  const [gpsStatus,     setGpsStatus]    = useState('searching');
-  const [recording,     setRecording]    = useState(false);
+  const [gpsStatus, setGpsStatus] = useState('searching');
+  const [recording, setRecording] = useState(false);
+  const walkRef   = useRef(walk);
+  const posRef    = useRef(null);
+  const addrRef   = useRef('Unknown address');
+  const visitedRef = useRef([]); // every distinct GPS position walked past this session
 
   const [grassType,    setGrassType]    = useState(null);
   const [amenity,      setAmenity]      = useState('None');

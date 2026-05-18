@@ -19,13 +19,17 @@ function aggregateLocations(walks) {
   for (const walk of walks) {
     for (const loc of walk.locations) {
       if (byAddr.has(loc.address)) {
-        byAddr.get(loc.address).count += loc.count;
+        const e = byAddr.get(loc.address);
+        e.total += loc.count;
+        e.walkCount += 1;
       } else {
-        byAddr.set(loc.address, { ...loc });
+        byAddr.set(loc.address, { ...loc, total: loc.count, walkCount: 1 });
       }
     }
   }
-  return Array.from(byAddr.values()).sort((a, b) => b.count - a.count);
+  return Array.from(byAddr.values())
+    .map(e => ({ ...e, avg: e.total / e.walkCount }))
+    .sort((a, b) => b.avg - a.avg);
 }
 
 function MapLegend() {
@@ -48,7 +52,7 @@ function MapLegend() {
 }
 
 function SurveySummary({ walks, locations }) {
-  const total    = locations.reduce((s, l) => s + l.count, 0);
+  const total    = locations.reduce((s, l) => s + l.total, 0);
   const hotSpots = locations.slice(0, 5);
 
   return (
@@ -68,7 +72,7 @@ function SurveySummary({ walks, locations }) {
 
       {hotSpots.length > 0 && (
         <div className="card sm:col-span-3">
-          <p className="text-xs font-medium text-muted uppercase tracking-wider mb-3">Top hot spots</p>
+          <p className="text-xs font-medium text-muted uppercase tracking-wider mb-3">Top hot spots (avg per walk)</p>
           <div className="flex flex-col gap-2">
             {hotSpots.map((loc, i) => (
               <div key={loc.address} className="flex items-center gap-3 text-sm">
@@ -77,11 +81,12 @@ function SurveySummary({ walks, locations }) {
                   {i + 1}
                 </span>
                 <span className="flex-1 text-ink">{loc.address}</span>
+                <span className="text-xs text-muted">{loc.walkCount}w</span>
                 <span
                   className="text-xs font-bold px-2 py-0.5 rounded-full text-white"
-                  style={{ background: poopColor(loc.count) }}
+                  style={{ background: poopColor(loc.avg) }}
                 >
-                  {loc.count}
+                  {loc.avg.toFixed(1)}
                 </span>
               </div>
             ))}
@@ -133,8 +138,10 @@ export default function MapPage() {
           have been recorded there across all survey walks.
         </p>
         <p className="mt-2">
-          Counts are cumulative across all walks, so an address showing 6 has had
-          6 piles recorded there in total since the project began.
+          Circle size and color reflect the <em>average piles per walk</em> for that address —
+          only walks where that street was actually surveyed count toward the average.
+          If Catalina St was only walked once, its average is based on that one walk,
+          not diluted by days when only Niagara St was covered.
         </p>
       </div>
     </div>
