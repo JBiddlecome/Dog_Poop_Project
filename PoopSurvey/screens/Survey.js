@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, Alert,
-  ScrollView, ActivityIndicator,
+  ScrollView, ActivityIndicator, TextInput,
 } from 'react-native';
 import * as Location from 'expo-location';
 import { saveWalk, addOrIncrementLocation, totalPoops } from '../utils/storage';
 import { distanceFeet } from '../utils/haversine';
 
-const PROXIMITY_FT   = 60;
+const PROXIMITY_FT    = 60;
 const GPS_INTERVAL_MS = 3000;
 
 const GRASS_OPTIONS    = ['Full grass', 'Sparse', 'Dirt', 'Rocks', 'Mulch'];
 const AMENITY_OPTIONS  = ['None', 'Trash bin', 'Bag station'];
 const BUILDING_OPTIONS = ['House', 'Apartment', 'Empty'];
+const SIGN_OPTIONS     = ['Has sign'];
 
 function MetaChips({ label, options, value, onChange, allowDeselect = true }) {
   return (
@@ -45,48 +46,81 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
   const [gpsStatus,     setGpsStatus]    = useState('searching');
   const [recording,     setRecording]    = useState(false);
 
-  // Location metadata for the current address
-  const [grassType,     setGrassType]    = useState(null);
-  const [amenity,       setAmenity]      = useState('None');
-  const [buildingType,  setBuildingType] = useState(null);
+  const [grassType,    setGrassType]    = useState(null);
+  const [amenity,      setAmenity]      = useState('None');
+  const [buildingType, setBuildingType] = useState(null);
+  const [hasSign,      setHasSign]      = useState(false);
+  const [signNote,     setSignNote]     = useState('');
 
-  const walkRef    = useRef(walk);
-  const posRef     = useRef(null);
-  const addrRef    = useRef('Unknown address');
-  const visitedRef = useRef([]); // each entry: { address, lat, lng, grassType, amenity, buildingType }
+  const walkRef     = useRef(walk);
+  const posRef      = useRef(null);
+  const addrRef     = useRef('');
+  const visitedRef  = useRef([]); // { address, lat, lng } — tracks all positions walked past
+  const signNoteRef = useRef(''); // stable ref for signNote so blur handler isn't stale
 
-  // Keep metaRef in sync so applyZeroVisits can use latest values
-  const metaRef = useRef({ grassType: null, amenity: 'None', buildingType: null });
+  const metaRef = useRef({ grassType: null, amenity: 'None', buildingType: null, hasSign: false, signNote: '' });
   useEffect(() => {
-    metaRef.current = { grassType, amenity, buildingType };
-  }, [grassType, amenity, buildingType]);
+    metaRef.current = { grassType, amenity, buildingType, hasSign, signNote };
+  }, [grassType, amenity, buildingType, hasSign, signNote]);
 
   useEffect(() => { walkRef.current = walk; }, [walk]);
   useEffect(() => { saveWalk(walk); }, [walk]);
 
-  // Update the visited entry closest to current position with new meta
-  function updateCurrentVisitedMeta(updates) {
+  // Reset all chips when moving to a new address
+  function resetMeta() {
+    setGrassType(null);
+    setAmenity('None');
+    setBuildingType(null);
+    setHasSign(false);
+    setSignNote('');
+    signNoteRef.current = '';
+  }
+
+  // Save metadata for the current address immediately — creates a count:0 entry if
+  // no + has been pressed yet, or updates metadata on an existing entry.
+  function upsertMeta(updates) {
     if (!posRef.current) return;
     const { lat, lng } = posRef.current;
-    const idx = visitedRef.current.findIndex(
-      v => distanceFeet({ lat: v.lat, lng: v.lng }, { lat, lng }) <= PROXIMITY_FT
-    );
-    if (idx >= 0) {
-      visitedRef.current[idx] = { ...visitedRef.current[idx], ...updates };
+    const addr = addrRef.current;
+    const fullMeta = { ...metaRef.current, ...updates };
+    setWalk(prev => {
+      const locs = prev.locations.map(l => ({ ...l }));
+      const idx = locs.findIndex(
+        l => distanceFeet({ lat: l.lat, lng: l.lng }, { lat, lng }) <= PROXIMITY_FT
+      );
+      if (idx >= 0) {
+        Object.assign(locs[idx], fullMeta);
+      } else {
+        locs.push({ address: addr, lat, lng, count: 0, ...fullMeta });
+      }
+      return { ...prev, locations: locs };
+    });
+  }
+
+  function handleGrassType(val)    { setGrassType(val);    upsertMeta({ grassType: val }); }
+  function handleAmenity(val)      { setAmenity(val);      upsertMeta({ amenity: val }); }
+  function handleBuildingType(val) { setBuildingType(val); upsertMeta({ buildingType: val }); }
+
+  function handleHasSign(val) {
+    const selected = val !== null;
+    setHasSign(selected);
+    if (!selected) {
+      setSignNote('');
+      signNoteRef.current = '';
+      upsertMeta({ hasSign: false, signNote: '' });
+    } else {
+      upsertMeta({ hasSign: true, signNote: signNoteRef.current });
     }
   }
 
-  function handleGrassType(val) {
-    setGrassType(val);
-    updateCurrentVisitedMeta({ grassType: val });
+  function handleSignNote(text) {
+    setSignNote(text);
+    signNoteRef.current = text;
   }
-  function handleAmenity(val) {
-    setAmenity(val);
-    updateCurrentVisitedMeta({ amenity: val });
-  }
-  function handleBuildingType(val) {
-    setBuildingType(val);
-    updateCurrentVisitedMeta({ buildingType: val });
+
+  // Save note text on blur so we don't upsert on every keystroke
+  function handleSignNoteBlur() {
+    upsertMeta({ signNote: signNoteRef.current });
   }
 
   useEffect(() => {
@@ -103,31 +137,35 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
           setCurrentPos({ lat, lng });
           posRef.current = { lat, lng };
 
+          let newAddr;
           try {
             const results = await Location.reverseGeocodeAsync({ latitude: lat, longitude: lng });
             if (results.length > 0) {
               const r = results[0];
-              const addr = [r.streetNumber, r.street].filter(Boolean).join(' ')
+              newAddr = [r.streetNumber, r.street].filter(Boolean).join(' ')
                 || r.name
                 || `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-              setCurrentAddress(addr);
-              addrRef.current = addr;
+            } else {
+              newAddr = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
             }
           } catch {
-            const fallback = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-            setCurrentAddress(fallback);
-            addrRef.current = fallback;
+            newAddr = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
           }
 
-          // Track every distinct position walked past so we can add 0s at walk end
+          setCurrentAddress(newAddr);
+
+          // Clear chips whenever the address string changes
+          if (newAddr !== addrRef.current) {
+            addrRef.current = newAddr;
+            resetMeta();
+          }
+
+          // Track every distinct position for applyZeroVisits at walk end
           const isNew = !visitedRef.current.some(
             v => distanceFeet({ lat: v.lat, lng: v.lng }, { lat, lng }) <= PROXIMITY_FT
           );
           if (isNew) {
-            visitedRef.current.push({
-              address: addrRef.current, lat, lng,
-              ...metaRef.current,
-            });
+            visitedRef.current.push({ address: newAddr, lat, lng });
           }
         }
       );
@@ -140,25 +178,23 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
     setRecording(true);
     try {
       const { lat, lng } = posRef.current;
-      const meta = { grassType, amenity, buildingType };
-      const updated = addOrIncrementLocation(walkRef.current, lat, lng, addrRef.current, meta);
-      setWalk(updated);
+      const meta = { ...metaRef.current };
+      // Use functional update so we always operate on the latest walk state
+      setWalk(prev => addOrIncrementLocation(prev, lat, lng, addrRef.current, meta));
     } finally {
       setRecording(false);
     }
   }
 
-  // For every position walked past without a + press, add count: 0 including
-  // whatever metadata was set for that position.
+  // Any position in visitedRef that isn't already in the walk gets a count:0 entry
   function applyZeroVisits(currentWalk) {
     const locations = currentWalk.locations.map(l => ({ ...l }));
     for (const v of visitedRef.current) {
-      const alreadyCounted = locations.some(
+      const alreadyIn = locations.some(
         l => distanceFeet({ lat: l.lat, lng: l.lng }, { lat: v.lat, lng: v.lng }) <= PROXIMITY_FT
       );
-      if (!alreadyCounted) {
-        const { address, lat, lng, grassType: gt, amenity: am, buildingType: bt } = v;
-        locations.push({ address, lat, lng, count: 0, grassType: gt, amenity: am, buildingType: bt });
+      if (!alreadyIn) {
+        locations.push({ address: v.address, lat: v.lat, lng: v.lng, count: 0 });
       }
     }
     return { ...currentWalk, locations };
@@ -201,27 +237,24 @@ export default function Survey({ walk: initialWalk, onEnd, onViewMap }) {
         <Text style={s.addrText} numberOfLines={2}>{currentAddress}</Text>
       </View>
 
-      {/* Location metadata */}
+      {/* Location metadata — auto-saves on tap, clears on address change */}
       <View style={s.metaCard}>
-        <MetaChips
-          label="GRASS"
-          options={GRASS_OPTIONS}
-          value={grassType}
-          onChange={handleGrassType}
-        />
-        <MetaChips
-          label="AMENITY"
-          options={AMENITY_OPTIONS}
-          value={amenity}
-          onChange={handleAmenity}
-          allowDeselect={false}
-        />
-        <MetaChips
-          label="BUILDING"
-          options={BUILDING_OPTIONS}
-          value={buildingType}
-          onChange={handleBuildingType}
-        />
+        <MetaChips label="GRASS"    options={GRASS_OPTIONS}    value={grassType}              onChange={handleGrassType} />
+        <MetaChips label="AMENITY"  options={AMENITY_OPTIONS}  value={amenity}                onChange={handleAmenity} allowDeselect={false} />
+        <MetaChips label="BUILDING" options={BUILDING_OPTIONS} value={buildingType}           onChange={handleBuildingType} />
+        <MetaChips label="SIGN"     options={SIGN_OPTIONS}     value={hasSign ? 'Has sign' : null} onChange={handleHasSign} />
+        {hasSign && (
+          <TextInput
+            style={s.signNote}
+            placeholder="What does the sign say?"
+            placeholderTextColor="#bbb"
+            value={signNote}
+            onChangeText={handleSignNote}
+            onBlur={handleSignNoteBlur}
+            multiline
+            returnKeyType="done"
+          />
+        )}
       </View>
 
       {/* Big record button */}
@@ -312,6 +345,13 @@ const s = StyleSheet.create({
   chipSelected: { backgroundColor: '#16a34a' },
   chipText: { fontSize: 12, color: '#555', fontWeight: '500' },
   chipTextSelected: { color: '#fff', fontWeight: '700' },
+
+  signNote: {
+    borderWidth: 1, borderColor: '#ddd', borderRadius: 10,
+    paddingHorizontal: 10, paddingVertical: 8,
+    fontSize: 13, color: '#333', backgroundColor: '#fff',
+    minHeight: 56, textAlignVertical: 'top',
+  },
 
   recordBtn: {
     width: 112, height: 112, borderRadius: 56,

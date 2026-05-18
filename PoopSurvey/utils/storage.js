@@ -30,6 +30,8 @@ export async function clearWalk() {
 //       grassType: "Full grass",   // "Full grass"|"Sparse"|"Dirt"|"Rocks"|"Mulch"|null
 //       amenity: "None",           // "None"|"Trash bin"|"Bag station"
 //       buildingType: "House",     // "House"|"Apartment"|"Empty"|null
+//       hasSign: false,            // boolean — poop sign present at address
+//       signNote: "",              // what the sign says
 //     }
 //   ]
 // }
