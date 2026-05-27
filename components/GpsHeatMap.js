@@ -11,11 +11,12 @@ function poopColor(count) {
 }
 
 function circleRadius(count) {
-  return Math.min(8 + count * 3, 30); // metres, same as Android app
+  return Math.min(8 + count * 3, 30); // metres
 }
 
-// Aggregate locations across walks. Only walks that actually visited an address
-// count toward its average — so unwalked streets aren't penalised with 0s.
+// Aggregate locations across walks. For numeric data, sum total and track walkCount.
+// For metadata (physical attributes), always keep the latest non-null value so
+// corrections from newer walks overwrite stale data.
 function aggregateLocations(walks) {
   const byAddr = new Map();
   for (const walk of walks) {
@@ -25,6 +26,12 @@ function aggregateLocations(walks) {
         const e = byAddr.get(key);
         e.total += loc.count;
         e.walkCount += 1;
+        // Take the most recent non-null/non-empty metadata value
+        if (loc.grassType    != null) e.grassType    = loc.grassType;
+        if (loc.amenity      != null) e.amenity      = loc.amenity;
+        if (loc.buildingType != null) e.buildingType = loc.buildingType;
+        if (loc.hasSign      != null) e.hasSign      = loc.hasSign;
+        if (loc.signNote               ) e.signNote  = loc.signNote;
       } else {
         byAddr.set(key, { ...loc, total: loc.count, walkCount: 1 });
       }
@@ -35,11 +42,42 @@ function aggregateLocations(walks) {
     .sort((a, b) => b.avg - a.avg);
 }
 
+// Build the Leaflet popup HTML for a location, including any available metadata.
+function buildPopupHtml(loc) {
+  let html = `<strong style="font-size:13px">${loc.address}</strong>`;
+
+  html += `<div style="margin-top:4px;color:#555;font-size:12px">`;
+  html += `${loc.avg.toFixed(1)} avg/walk &nbsp;·&nbsp; ${loc.total} total &nbsp;·&nbsp; ${loc.walkCount} walk${loc.walkCount !== 1 ? 's' : ''}`;
+  html += `</div>`;
+
+  // Physical / environmental chips
+  const chips = [];
+  if (loc.grassType)                         chips.push(`🌿 ${loc.grassType}`);
+  if (loc.buildingType === 'House')          chips.push('🏠 House');
+  else if (loc.buildingType === 'Apartment') chips.push('🏢 Apartment');
+  else if (loc.buildingType === 'Empty')     chips.push('⬜ Empty lot');
+  if (loc.amenity === 'Trash bin')           chips.push('🗑️ Trash bin');
+  else if (loc.amenity === 'Bag station')    chips.push('🐾 Bag station');
+
+  if (chips.length > 0) {
+    html += `<div style="margin-top:5px;font-size:11px;color:#666">${chips.join(' &nbsp;·&nbsp; ')}</div>`;
+  }
+
+  // Sign info
+  if (loc.hasSign) {
+    html += `<div style="margin-top:4px;font-size:11px;color:#666">🪧 Sign present`;
+    if (loc.signNote) html += `: <em style="color:#444">${loc.signNote}</em>`;
+    html += `</div>`;
+  }
+
+  return html;
+}
+
 // Block 1 center: Thornton/Empire between Niagara and Catalina in Burbank, CA
 const BLOCK_CENTER = [34.195, -118.342];
 
 export default function GpsHeatMap({ walks }) {
-  const mapDivRef     = useRef(null);
+  const mapDivRef      = useRef(null);
   const mapInstanceRef = useRef(null);
 
   useEffect(() => {
@@ -72,11 +110,7 @@ export default function GpsHeatMap({ walks }) {
             color:       color,
             weight:      2,
           })
-            .bindPopup(
-              `<strong>${loc.address}</strong><br>` +
-              `${loc.avg.toFixed(1)} avg / walk<br>` +
-              `<span style="color:#888;font-size:11px">${loc.total} total · ${loc.walkCount} walk${loc.walkCount !== 1 ? 's' : ''}</span>`
-            )
+            .bindPopup(buildPopupHtml(loc), { maxWidth: 260 })
             .addTo(map);
           bounds.push([loc.lat, loc.lng]);
         }

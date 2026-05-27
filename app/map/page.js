@@ -1,6 +1,5 @@
 import GpsHeatMap from '@/components/GpsHeatMap';
 import walksData from '@/data/walks.json';
-import config from '@/data/config.json';
 
 export const metadata = {
   title: 'Block 1 Heat Map — Our Block',
@@ -14,6 +13,9 @@ function poopColor(count) {
   return '#16a34a';
 }
 
+// Aggregate locations across walks. For numeric data, sum total and track walkCount.
+// For metadata (physical attributes), always keep the latest non-null value so
+// corrections from newer walks overwrite stale data.
 function aggregateLocations(walks) {
   const byAddr = new Map();
   for (const walk of walks) {
@@ -22,6 +24,12 @@ function aggregateLocations(walks) {
         const e = byAddr.get(loc.address);
         e.total += loc.count;
         e.walkCount += 1;
+        // Take the most recent non-null/non-empty metadata value
+        if (loc.grassType    != null) e.grassType    = loc.grassType;
+        if (loc.amenity      != null) e.amenity      = loc.amenity;
+        if (loc.buildingType != null) e.buildingType = loc.buildingType;
+        if (loc.hasSign      != null) e.hasSign      = loc.hasSign;
+        if (loc.signNote               ) e.signNote  = loc.signNote;
       } else {
         byAddr.set(loc.address, { ...loc, total: loc.count, walkCount: 1 });
       }
@@ -51,6 +59,34 @@ function MapLegend() {
   );
 }
 
+// Small metadata pill used in the hotspot list
+function MetaPill({ children }) {
+  return (
+    <span className="inline-flex items-center text-xs bg-rule text-muted px-1.5 py-0.5 rounded-full">
+      {children}
+    </span>
+  );
+}
+
+function LocationMeta({ loc }) {
+  const pills = [];
+
+  if (loc.grassType)                         pills.push(`🌿 ${loc.grassType}`);
+  if (loc.buildingType === 'House')          pills.push('🏠 House');
+  else if (loc.buildingType === 'Apartment') pills.push('🏢 Apartment');
+  else if (loc.buildingType === 'Empty')     pills.push('⬜ Empty lot');
+  if (loc.amenity === 'Trash bin')           pills.push('🗑️ Trash bin');
+  else if (loc.amenity === 'Bag station')    pills.push('🐾 Bag station');
+  if (loc.hasSign)                           pills.push(loc.signNote ? `🪧 "${loc.signNote}"` : '🪧 Sign');
+
+  if (pills.length === 0) return null;
+  return (
+    <div className="flex flex-wrap gap-1 mt-1">
+      {pills.map(p => <MetaPill key={p}>{p}</MetaPill>)}
+    </div>
+  );
+}
+
 function SurveySummary({ walks, locations }) {
   const total    = locations.reduce((s, l) => s + l.total, 0);
   const hotSpots = locations.slice(0, 5);
@@ -73,21 +109,26 @@ function SurveySummary({ walks, locations }) {
       {hotSpots.length > 0 && (
         <div className="card sm:col-span-3">
           <p className="text-xs font-medium text-muted uppercase tracking-wider mb-3">Top hot spots (avg per walk)</p>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-3">
             {hotSpots.map((loc, i) => (
-              <div key={loc.address} className="flex items-center gap-3 text-sm">
-                <span className="w-5 h-5 rounded bg-gold-light text-gold-dark text-xs
-                                 font-bold flex items-center justify-center shrink-0">
-                  {i + 1}
-                </span>
-                <span className="flex-1 text-ink">{loc.address}</span>
-                <span className="text-xs text-muted">{loc.walkCount}w</span>
-                <span
-                  className="text-xs font-bold px-2 py-0.5 rounded-full text-white"
-                  style={{ background: poopColor(loc.avg) }}
-                >
-                  {loc.avg.toFixed(1)}
-                </span>
+              <div key={loc.address}>
+                <div className="flex items-center gap-3 text-sm">
+                  <span className="w-5 h-5 rounded bg-gold-light text-gold-dark text-xs
+                                   font-bold flex items-center justify-center shrink-0">
+                    {i + 1}
+                  </span>
+                  <span className="flex-1 text-ink">{loc.address}</span>
+                  <span className="text-xs text-muted">{loc.walkCount}w</span>
+                  <span
+                    className="text-xs font-bold px-2 py-0.5 rounded-full text-white shrink-0"
+                    style={{ background: poopColor(loc.avg) }}
+                  >
+                    {loc.avg.toFixed(1)}
+                  </span>
+                </div>
+                <div className="pl-8">
+                  <LocationMeta loc={loc} />
+                </div>
               </div>
             ))}
           </div>
@@ -109,7 +150,7 @@ export default function MapPage() {
         <p className="text-muted max-w-lg mx-auto text-sm leading-relaxed">
           Each circle shows where dog waste was spotted during survey walks.
           Larger, redder circles mean more piles at that address.
-          Tap any circle for the address and count.
+          Tap any circle for the address, count, and site details.
         </p>
         {lastWalk && (
           <p className="text-xs text-muted mt-2">
@@ -142,6 +183,10 @@ export default function MapPage() {
           only walks where that street was actually surveyed count toward the average.
           If Catalina St was only walked once, its average is based on that one walk,
           not diluted by days when only Niagara St was covered.
+        </p>
+        <p className="mt-2">
+          Each circle popup shows site details logged during the walk: ground cover,
+          building type, nearby amenities, and any dog waste signs at that address.
         </p>
       </div>
     </div>
