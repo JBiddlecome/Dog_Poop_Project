@@ -684,6 +684,382 @@
           "count": 1
         }
       ]
+    },
+    {
+      "date": "2026-05-27",
+      "locations": [
+        {
+          "address": "2341 North Catalina Street",
+          "lat": 34.1953273,
+          "lng": -118.3417188,
+          "count": 0,
+          "grassType": null,
+          "amenity": "None",
+          "buildingType": "Apartment",
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2345 North Catalina Street",
+          "lat": 34.1954358,
+          "lng": -118.3413094,
+          "count": 2,
+          "grassType": null,
+          "amenity": "None",
+          "buildingType": "Apartment",
+          "poopSign": "Sign",
+          "signText": ""
+        },
+        {
+          "address": "2341 North Catalina Street",
+          "lat": 34.1952691,
+          "lng": -118.3413206,
+          "count": 8,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2335 North Catalina Street",
+          "lat": 34.1949994,
+          "lng": -118.341345,
+          "count": 1,
+          "grassType": null,
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2331 North Catalina Street",
+          "lat": 34.1948174,
+          "lng": -118.3413218,
+          "count": 1,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2321 North Catalina Street",
+          "lat": 34.1946087,
+          "lng": -118.3413306,
+          "count": 2,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2319 North Catalina Street",
+          "lat": 34.1944405,
+          "lng": -118.3413512,
+          "count": 2,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2311 North Catalina Street",
+          "lat": 34.1941689,
+          "lng": -118.3413135,
+          "count": 1,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2307 North Catalina Street",
+          "lat": 34.1939966,
+          "lng": -118.3413128,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2251 North Catalina Street",
+          "lat": 34.1938011,
+          "lng": -118.3413369,
+          "count": 0,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2247 North Catalina Street",
+          "lat": 34.193622,
+          "lng": -118.3413254,
+          "count": 3,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "Sign",
+          "signText": "Please clean up after your dog"
+        },
+        {
+          "address": "2243 North Catalina Street",
+          "lat": 34.19342,
+          "lng": -118.3413717,
+          "count": 3,
+          "grassType": "Rocks",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2235 North Catalina Street",
+          "lat": 34.1932271,
+          "lng": -118.3413697,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2233 North Catalina Street",
+          "lat": 34.1930294,
+          "lng": -118.341338,
+          "count": 1,
+          "grassType": null,
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2225 North Catalina Street",
+          "lat": 34.1928482,
+          "lng": -118.3413717,
+          "count": 1,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2215 North Catalina Street",
+          "lat": 34.1924995,
+          "lng": -118.3413641,
+          "count": 0,
+          "grassType": "Mulch",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2805 Empire Avenue",
+          "lat": 34.1923464,
+          "lng": -118.3414383,
+          "count": 0,
+          "grassType": "Mulch",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2212 North Niagara Street",
+          "lat": 34.1923936,
+          "lng": -118.3422511,
+          "count": 5,
+          "grassType": null,
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2220 North Niagara Street",
+          "lat": 34.1926171,
+          "lng": -118.3423268,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "Sign",
+          "signText": "Clean up after your dog"
+        },
+        {
+          "address": "2222 North Niagara Street",
+          "lat": 34.1928332,
+          "lng": -118.3422885,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2230 North Niagara Street",
+          "lat": 34.1930028,
+          "lng": -118.3423017,
+          "count": 1,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2234 North Niagara Street",
+          "lat": 34.193188,
+          "lng": -118.342302,
+          "count": 1,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2238 North Niagara Street",
+          "lat": 34.193401,
+          "lng": -118.3422904,
+          "count": 1,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2300 North Niagara Street",
+          "lat": 34.1938054,
+          "lng": -118.342275,
+          "count": 5,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2306 North Niagara Street",
+          "lat": 34.1941096,
+          "lng": -118.3422972,
+          "count": 14,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2314 North Niagara Street",
+          "lat": 34.1942818,
+          "lng": -118.3422767,
+          "count": 5,
+          "grassType": null,
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2316 North Niagara Street",
+          "lat": 34.1944683,
+          "lng": -118.342293,
+          "count": 1,
+          "grassType": null,
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2320 North Niagara Street",
+          "lat": 34.1946633,
+          "lng": -118.3422738,
+          "count": 2,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2330 North Niagara Street",
+          "lat": 34.1949337,
+          "lng": -118.3422696,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2338 North Niagara Street",
+          "lat": 34.1951307,
+          "lng": -118.3422551,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2340 North Niagara Street",
+          "lat": 34.195347,
+          "lng": -118.3422514,
+          "count": 0,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2800 Thornton Avenue",
+          "lat": 34.1955139,
+          "lng": -118.3416263,
+          "count": 0
+        },
+        {
+          "address": "2805 Empire Avenue",
+          "lat": 34.1923907,
+          "lng": -118.3417443,
+          "count": 0
+        },
+        {
+          "address": "2212 North Niagara Street",
+          "lat": 34.1923776,
+          "lng": -118.3419642,
+          "count": 0
+        },
+        {
+          "address": "2246 North Niagara Street",
+          "lat": 34.1936132,
+          "lng": -118.3422822,
+          "count": 0
+        },
+        {
+          "address": "2346 North Niagara Street",
+          "lat": 34.1955164,
+          "lng": -118.3420764,
+          "count": 0
+        }
+      ]
     }
   ]
 }
