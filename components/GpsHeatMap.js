@@ -30,8 +30,8 @@ function aggregateLocations(walks) {
         if (loc.grassType    != null) e.grassType    = loc.grassType;
         if (loc.amenity      != null) e.amenity      = loc.amenity;
         if (loc.buildingType != null) e.buildingType = loc.buildingType;
-        if (loc.hasSign      != null) e.hasSign      = loc.hasSign;
-        if (loc.signNote               ) e.signNote  = loc.signNote;
+        if (loc.poopSign     != null) e.poopSign     = loc.poopSign;
+        if (loc.signText               ) e.signText   = loc.signText;
       } else {
         byAddr.set(key, { ...loc, total: loc.count, walkCount: 1 });
       }
@@ -64,9 +64,9 @@ function buildPopupHtml(loc) {
   }
 
   // Sign info
-  if (loc.hasSign) {
+  if (loc.poopSign === 'Sign') {
     html += `<div style="margin-top:4px;font-size:11px;color:#666">🪧 Sign present`;
-    if (loc.signNote) html += `: <em style="color:#444">${loc.signNote}</em>`;
+    if (loc.signText) html += `: <em style="color:#444">${loc.signText}</em>`;
     html += `</div>`;
   }
 

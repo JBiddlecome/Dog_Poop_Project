@@ -28,8 +28,8 @@ function aggregateLocations(walks) {
         if (loc.grassType    != null) e.grassType    = loc.grassType;
         if (loc.amenity      != null) e.amenity      = loc.amenity;
         if (loc.buildingType != null) e.buildingType = loc.buildingType;
-        if (loc.hasSign      != null) e.hasSign      = loc.hasSign;
-        if (loc.signNote               ) e.signNote  = loc.signNote;
+        if (loc.poopSign     != null) e.poopSign     = loc.poopSign;
+        if (loc.signText               ) e.signText   = loc.signText;
       } else {
         byAddr.set(loc.address, { ...loc, total: loc.count, walkCount: 1 });
       }
@@ -77,7 +77,7 @@ function LocationMeta({ loc }) {
   else if (loc.buildingType === 'Empty')     pills.push('⬜ Empty lot');
   if (loc.amenity === 'Trash bin')           pills.push('🗑️ Trash bin');
   else if (loc.amenity === 'Bag station')    pills.push('🐾 Bag station');
-  if (loc.hasSign)                           pills.push(loc.signNote ? `🪧 "${loc.signNote}"` : '🪧 Sign');
+  if (loc.poopSign === 'Sign')               pills.push(loc.signText ? `🪧 "${loc.signText}"` : '🪧 Sign');
 
   if (pills.length === 0) return null;
   return (
