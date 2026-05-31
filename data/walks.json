@@ -1060,6 +1060,242 @@
           "count": 0
         }
       ]
+    },
+    {
+      "date": "2026-05-31",
+      "locations": [
+        {
+          "address": "2801 Thornton Avenue",
+          "lat": 34.1957731,
+          "lng": -118.3416454,
+          "count": 1,
+          "grassType": "Rocks",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2713 Thornton Avenue",
+          "lat": 34.195596,
+          "lng": -118.3412573,
+          "count": 0,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2720 Thornton Avenue",
+          "lat": 34.1955298,
+          "lng": -118.3409432,
+          "count": 0,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2345 North Naomi Street",
+          "lat": 34.1955079,
+          "lng": -118.3401788,
+          "count": 0,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2615 Thornton Avenue",
+          "lat": 34.1955072,
+          "lng": -118.3397962,
+          "count": 0,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2147 North Frederic Street",
+          "lat": 34.1955018,
+          "lng": -118.3395645,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2147 North Frederic Street",
+          "lat": 34.1953634,
+          "lng": -118.3391215,
+          "count": 1,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2139 North Frederic Street",
+          "lat": 34.1951544,
+          "lng": -118.339127,
+          "count": 1,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2131 North Frederic Street",
+          "lat": 34.1947765,
+          "lng": -118.339163,
+          "count": 2,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2119 North Frederic Street",
+          "lat": 34.1944307,
+          "lng": -118.3391492,
+          "count": 0,
+          "grassType": "Rocks",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2111 North Frederic Street",
+          "lat": 34.1941758,
+          "lng": -118.3391384,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2107 North Frederic Street",
+          "lat": 34.1938948,
+          "lng": -118.3391826,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2049 North Frederic Street",
+          "lat": 34.1936829,
+          "lng": -118.3391683,
+          "count": 0,
+          "grassType": "Rocks",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2041 North Frederic Street",
+          "lat": 34.1933979,
+          "lng": -118.3391578,
+          "count": 0,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2031 North Frederic Street",
+          "lat": 34.1930982,
+          "lng": -118.3391168,
+          "count": 0,
+          "grassType": "Rocks",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2023 North Frederic Street",
+          "lat": 34.1927865,
+          "lng": -118.3392038,
+          "count": 0,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2017 North Frederic Street",
+          "lat": 34.1926175,
+          "lng": -118.3391779,
+          "count": 0,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2017 North Frederic Street",
+          "lat": 34.1924199,
+          "lng": -118.3390891,
+          "count": 1,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2020 North Frederic Street",
+          "lat": 34.1927336,
+          "lng": -118.3390086,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2120 North Frederic Street",
+          "lat": 34.1945889,
+          "lng": -118.3389913,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2134 North Frederic Street",
+          "lat": 34.1949831,
+          "lng": -118.3389633,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        }
+      ]
     }
   ]
 }
