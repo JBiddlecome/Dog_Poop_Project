@@ -1296,6 +1296,199 @@
           "signText": ""
         }
       ]
+    },
+    {
+      "date": "2026-06-01",
+      "locations": [
+        {
+          "address": "2344 North Fairview Street",
+          "lat": 34.1954759,
+          "lng": -118.3433555,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": "House",
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2336 North Fairview Street",
+          "lat": 34.1951416,
+          "lng": -118.3433316,
+          "count": 0,
+          "grassType": null,
+          "amenity": "None",
+          "buildingType": "Apartment",
+          "poopSign": "Sign",
+          "signText": "Schedule you're on camera please clean up after your stuff"
+        },
+        {
+          "address": "2328 North Fairview Street",
+          "lat": 34.1948524,
+          "lng": -118.3433533,
+          "count": 1,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": "House",
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2322 North Fairview Street",
+          "lat": 34.1946646,
+          "lng": -118.3433584,
+          "count": 2,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2318 North Fairview Street",
+          "lat": 34.1944136,
+          "lng": -118.343343,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2300 North Fairview Street",
+          "lat": 34.193974,
+          "lng": -118.3433534,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": "Apartment",
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2250 North Fairview Street",
+          "lat": 34.1937651,
+          "lng": -118.343376,
+          "count": 0,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": "House",
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2246 North Fairview Street",
+          "lat": 34.1935751,
+          "lng": -118.3433682,
+          "count": 0,
+          "grassType": "Dirt",
+          "amenity": "None",
+          "buildingType": "Apartment",
+          "poopSign": "Sign",
+          "signText": "Schedule you're on camera"
+        },
+        {
+          "address": "2236 North Fairview Street",
+          "lat": 34.1933629,
+          "lng": -118.3434019,
+          "count": 2,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2230 North Fairview Street",
+          "lat": 34.1931017,
+          "lng": -118.343382,
+          "count": 0,
+          "grassType": "Dirt",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2245 North Fairview Street",
+          "lat": 34.193498,
+          "lng": -118.3435628,
+          "count": 0,
+          "grassType": null,
+          "amenity": "None",
+          "buildingType": "Apartment",
+          "poopSign": "Sign",
+          "signText": ""
+        },
+        {
+          "address": "2301 North Fairview Street",
+          "lat": 34.1938499,
+          "lng": -118.3435652,
+          "count": 1,
+          "grassType": "Dirt",
+          "amenity": "None",
+          "buildingType": "Apartment",
+          "poopSign": "Sign",
+          "signText": "It's the law clean up after your dog"
+        },
+        {
+          "address": "2311 North Fairview Street",
+          "lat": 34.1941644,
+          "lng": -118.3435452,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2321 North Fairview Street",
+          "lat": 34.1945537,
+          "lng": -118.343531,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": null,
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2327 North Fairview Street",
+          "lat": 34.1947546,
+          "lng": -118.3435381,
+          "count": 0,
+          "grassType": "Full grass",
+          "amenity": "None",
+          "buildingType": "House",
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2337 North Fairview Street",
+          "lat": 34.1950504,
+          "lng": -118.3435342,
+          "count": 0,
+          "grassType": "Sparse",
+          "amenity": "None",
+          "buildingType": "Apartment",
+          "poopSign": "No Sign",
+          "signText": ""
+        },
+        {
+          "address": "2340 North Fairview Street",
+          "lat": 34.1953135,
+          "lng": -118.3434068,
+          "count": 0
+        },
+        {
+          "address": "2312 North Fairview Street",
+          "lat": 34.1942439,
+          "lng": -118.3433572,
+          "count": 0
+        }
+      ]
     }
   ]
 }
